@@ -2,7 +2,7 @@
 
 namespace Funds.Withdraw.ATM;
 
-internal class FetchFundsFromAtm
+internal sealed class FetchFundsFromAtm
 {
     private readonly ILogger<FetchFundsFromAtm> _logger;
     private readonly IEvDbAtmFundsWithdrawFactory _fundsFactory;
@@ -15,10 +15,12 @@ internal class FetchFundsFromAtm
         _fundsFactory = fundsFactory;
     }
 
-    public async Task DepositFundsAsync(string account,
+    public async Task ProcessAsync(string account,
                                         FundsTransactionData data,
                                         CancellationToken cancellationToken = default)
     {
+        _logger.LogFetchFundsFromAtmStarted(account, data);
+
         IEvDbAtmFundsWithdraw stream = await _fundsFactory.GetAsync(account, cancellationToken);
         FundsFetchRequestedFromATM e = new(data);
         await stream.AddAsync(e);
