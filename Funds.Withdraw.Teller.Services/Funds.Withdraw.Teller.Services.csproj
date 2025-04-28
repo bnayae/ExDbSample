@@ -1,8 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\Funds.Withdraw.Teller.Repositories\Funds.Withdraw.Teller.Repositories.csproj" />
-  </ItemGroup>
-
-</Project>

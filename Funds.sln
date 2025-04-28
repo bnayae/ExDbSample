@@ -2,19 +2,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Core.Abstractions", "Funds.Withdraw.Core.Abstractions\Funds.Withdraw.Core.Abstractions.csproj", "{3034292F-8B55-4338-9C7E-1A14B2E6DBFF}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		Directory.Build.props = Directory.Build.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Core.Repositories", "Funds.Withdraw.Core.Repositories\Funds.Withdraw.Core.Repositories.csproj", "{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Abstractions", "Funds.Withdraw.Abstractions\Funds.Withdraw.Abstractions.csproj", "{3034292F-8B55-4338-9C7E-1A14B2E6DBFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.API", "Funds.Withdraw.ATM.API\Funds.Withdraw.ATM.API.csproj", "{6FFC52E4-FD7A-4A1E-863A-85AA015DF384}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Deployment", "Funds.Withdraw.ATM.Deployment\Funds.Withdraw.ATM.Deployment.csproj", "{6FFC52E4-FD7A-4A1E-863A-85AA015DF384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Services", "Funds.Withdraw.ATM.Services\Funds.Withdraw.ATM.Services.csproj", "{BEEF18D2-05C6-4159-869A-A9DDF9463462}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.FetchFunds.Slice", "Funds.Withdraw.ATM.FetchFunds.Slice\Funds.Withdraw.ATM.FetchFunds.Slice.csproj", "{BEEF18D2-05C6-4159-869A-A9DDF9463462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Abstractions", "Funds.Withdraw.ATM.Abstractions\Funds.Withdraw.ATM.Abstractions.csproj", "{876D2EB8-5B53-415C-E72A-474576B7C7D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Swimlanes", "Funds.Withdraw.ATM.Swimlanes\Funds.Withdraw.ATM.Swimlanes.csproj", "{C88F2526-C210-6927-7BF3-689BA27DE56D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Abstractions", "Funds.Abstractions\Funds.Abstractions.csproj", "{F207A34D-F3E4-2CA3-BCD0-28B6A11F3094}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Withdraw", "Withdraw", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
@@ -22,25 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ATM", "ATM", "{D7BB7ED4-6D7
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Teller", "Teller", "{4410AB05-69C0-457F-8EE7-F26263D249E7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{F60F83D3-B814-4668-82D4-79F5D0562150}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Edges", "Edges", "{D2321C40-8F5B-4914-B3E0-B2226D111F3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Core.Services", "Funds.Withdraw.Core.Services\Funds.Withdraw.Core.Services.csproj", "{88A5007B-2620-5FC2-EFD0-FB8B11B639FA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Core.API", "Funds.Withdraw.Core.API\Funds.Withdraw.Core.API.csproj", "{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Abstractions", "Funds.Withdraw.ATM.Abstractions\Funds.Withdraw.ATM.Abstractions.csproj", "{876D2EB8-5B53-415C-E72A-474576B7C7D4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.ATM.Repositories", "Funds.Withdraw.ATM.Repositories\Funds.Withdraw.ATM.Repositories.csproj", "{C88F2526-C210-6927-7BF3-689BA27DE56D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Teller.Abstractions", "Funds.Withdraw.Teller.Abstractions\Funds.Withdraw.Teller.Abstractions.csproj", "{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Teller.Repositories", "Funds.Withdraw.Teller.Repositories\Funds.Withdraw.Teller.Repositories.csproj", "{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Teller.Services", "Funds.Withdraw.Teller.Services\Funds.Withdraw.Teller.Services.csproj", "{40766528-FBC4-5A33-5A2D-91CD3D95F27E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Funds.Withdraw.Teller.API", "Funds.Withdraw.Teller.API\Funds.Withdraw.Teller.API.csproj", "{57BB375B-3B15-D8FA-6BBE-1034A156B8A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -52,10 +38,6 @@ Global
 		{3034292F-8B55-4338-9C7E-1A14B2E6DBFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3034292F-8B55-4338-9C7E-1A14B2E6DBFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3034292F-8B55-4338-9C7E-1A14B2E6DBFF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FFC52E4-FD7A-4A1E-863A-85AA015DF384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6FFC52E4-FD7A-4A1E-863A-85AA015DF384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FFC52E4-FD7A-4A1E-863A-85AA015DF384}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,14 +46,6 @@ Global
 		{BEEF18D2-05C6-4159-869A-A9DDF9463462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEEF18D2-05C6-4159-869A-A9DDF9463462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEEF18D2-05C6-4159-869A-A9DDF9463462}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88A5007B-2620-5FC2-EFD0-FB8B11B639FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88A5007B-2620-5FC2-EFD0-FB8B11B639FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88A5007B-2620-5FC2-EFD0-FB8B11B639FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88A5007B-2620-5FC2-EFD0-FB8B11B639FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{876D2EB8-5B53-415C-E72A-474576B7C7D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{876D2EB8-5B53-415C-E72A-474576B7C7D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{876D2EB8-5B53-415C-E72A-474576B7C7D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -80,43 +54,23 @@ Global
 		{C88F2526-C210-6927-7BF3-689BA27DE56D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C88F2526-C210-6927-7BF3-689BA27DE56D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C88F2526-C210-6927-7BF3-689BA27DE56D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40766528-FBC4-5A33-5A2D-91CD3D95F27E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40766528-FBC4-5A33-5A2D-91CD3D95F27E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40766528-FBC4-5A33-5A2D-91CD3D95F27E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40766528-FBC4-5A33-5A2D-91CD3D95F27E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{57BB375B-3B15-D8FA-6BBE-1034A156B8A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57BB375B-3B15-D8FA-6BBE-1034A156B8A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57BB375B-3B15-D8FA-6BBE-1034A156B8A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57BB375B-3B15-D8FA-6BBE-1034A156B8A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F207A34D-F3E4-2CA3-BCD0-28B6A11F3094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F207A34D-F3E4-2CA3-BCD0-28B6A11F3094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F207A34D-F3E4-2CA3-BCD0-28B6A11F3094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F207A34D-F3E4-2CA3-BCD0-28B6A11F3094}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{3034292F-8B55-4338-9C7E-1A14B2E6DBFF} = {F60F83D3-B814-4668-82D4-79F5D0562150}
-		{22A97E1C-F3BE-4FA4-A42E-CEB694DD535F} = {F60F83D3-B814-4668-82D4-79F5D0562150}
+		{3034292F-8B55-4338-9C7E-1A14B2E6DBFF} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{6FFC52E4-FD7A-4A1E-863A-85AA015DF384} = {D7BB7ED4-6D74-485F-A9F1-9E1F45A021BC}
 		{BEEF18D2-05C6-4159-869A-A9DDF9463462} = {D7BB7ED4-6D74-485F-A9F1-9E1F45A021BC}
 		{D7BB7ED4-6D74-485F-A9F1-9E1F45A021BC} = {D2321C40-8F5B-4914-B3E0-B2226D111F3E}
 		{4410AB05-69C0-457F-8EE7-F26263D249E7} = {D2321C40-8F5B-4914-B3E0-B2226D111F3E}
-		{F60F83D3-B814-4668-82D4-79F5D0562150} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{D2321C40-8F5B-4914-B3E0-B2226D111F3E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{88A5007B-2620-5FC2-EFD0-FB8B11B639FA} = {F60F83D3-B814-4668-82D4-79F5D0562150}
-		{D57AA5D7-BD8F-FA03-35EF-CD87B2807B0A} = {F60F83D3-B814-4668-82D4-79F5D0562150}
 		{876D2EB8-5B53-415C-E72A-474576B7C7D4} = {D7BB7ED4-6D74-485F-A9F1-9E1F45A021BC}
 		{C88F2526-C210-6927-7BF3-689BA27DE56D} = {D7BB7ED4-6D74-485F-A9F1-9E1F45A021BC}
-		{EAE8DCE8-AF86-7A61-858B-2A6EB39E9DE5} = {4410AB05-69C0-457F-8EE7-F26263D249E7}
-		{741E48CE-85C1-91D8-B9C7-D047BF4DFE5F} = {4410AB05-69C0-457F-8EE7-F26263D249E7}
-		{40766528-FBC4-5A33-5A2D-91CD3D95F27E} = {4410AB05-69C0-457F-8EE7-F26263D249E7}
-		{57BB375B-3B15-D8FA-6BBE-1034A156B8A3} = {4410AB05-69C0-457F-8EE7-F26263D249E7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B09486AB-7BC0-49ED-9D6A-A748550F7653}
