@@ -1,2 +1,3 @@
 - [ ] Entity/Log Classification
 - [ ] Common Data Protection
+- [ ] Swagger alternatives

@@ -9,6 +9,8 @@ namespace Funds.Withdraw.ATM;
 [EvDbOutbox<AtmFundsWithdrawFactory>]
 internal sealed partial class AtmFundsOutbox
 {
+    
+    
     protected override void ProduceOutboxMessages(FundsFetchRequestedFromATM payload,
                                                   IEvDbEventMeta meta,
                                                   EvDbAtmFundsWithdrawViews views,

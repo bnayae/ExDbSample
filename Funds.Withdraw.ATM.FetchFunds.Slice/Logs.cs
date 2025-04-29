@@ -9,8 +9,9 @@ namespace Funds.Withdraw.ATM;
 
 public static partial class Logs
 {
-    [LoggerMessage(LogLevel.Debug, "Fetch Funds From ATM Started {account}, {data}")]
-    public static partial void LogFetchFundsFromAtmStarted(this ILogger logger,
+    [LoggerMessage(LogLevel.Debug, "Fetch Funds From ATM Started {account}, {data}, {response}")]
+    public static partial void LogFetchFundsFromAtm(this ILogger logger,
                                                            string account,
-                                                           [LogProperties] FundsTransactionData data);
+                                                           [LogProperties] FundsTransactionData data,
+                                                           [LogProperties] StreamStoreAffected response);
 }
