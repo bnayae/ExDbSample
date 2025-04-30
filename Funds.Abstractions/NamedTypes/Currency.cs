@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using Vogen;
 
 namespace Funds.Abstractions;
@@ -11,7 +12,7 @@ namespace Funds.Abstractions;
     isInitializedMethodGeneration: IsInitializedMethodGeneration.Generate)]
 public readonly partial struct Currency
 {
-    private static Validation Validate(string input) => input.Length != 3
+    private static Validation Validate(string input) => input.Length == 3
                         ? Validation.Ok
                         : Validation.Invalid("Expecting 3 Letters ISO standard");
 

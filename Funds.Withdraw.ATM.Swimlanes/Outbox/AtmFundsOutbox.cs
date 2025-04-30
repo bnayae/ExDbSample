@@ -9,7 +9,7 @@ namespace Funds.Withdraw.ATM;
 [EvDbOutbox<AtmFundsWithdrawFactory>]
 internal sealed partial class AtmFundsOutbox
 {
-    
+    private const string INITIATE_METHOD = "ATM";
     
     protected override void ProduceOutboxMessages(FundsFetchRequestedFromATM payload,
                                                   IEvDbEventMeta meta,
@@ -17,7 +17,7 @@ internal sealed partial class AtmFundsOutbox
                                                   AtmFundsOutboxContext outbox)
     {
         // Create a command for the withdrawal flow
-        FundsWithdrawalRequested msg = new(payload.Data);
+        FundsWithdrawalRequested msg = new(payload.Data, INITIATE_METHOD);
         outbox.Add(msg);
     }
 }

@@ -1,6 +1,16 @@
 @Funds.Withdraw.ATM.API_HostAddress = http://localhost:5184
 
-GET {{Funds.Withdraw.ATM.API_HostAddress}}/weatherforecast/
+POST {{Funds.Withdraw.ATM.API_HostAddress}}/withdraw/atm/44445555-5717-4562-b3fc-2c963f661111
 Accept: application/json
+Content-Type: application/json
+
+{
+  "paymentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "transactionDate": "2025-04-29T09:47:27.787Z",
+  "currency": "USD",
+  "flowContexts": [],
+  "amount": 10
+}
 
 ###

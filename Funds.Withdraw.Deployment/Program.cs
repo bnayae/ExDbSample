@@ -1,3 +1,4 @@
+using Funds.Abstractions;
 using Funds.Withdraw.ATM;
 using Microsoft.Extensions;
 using Vogen;
@@ -39,8 +40,9 @@ app.UseHttpsRedirection();
 var withdraw = app.MapGroup("withdraw")
     .WithTags("Withdraw");
 
-withdraw.MapPost("atm", async (FetchFundsFromAtmRequest request, IFetchFundsFromAtm slice) =>
+withdraw.MapPost("atm/{account}", async (Guid account, FundsTransactionData data, IFetchFundsFromAtm slice) =>
     {
+        FetchFundsFromAtmRequest request = new(account, data);
         await slice.ProcessAsync(request);
         return Results.Ok();
     });

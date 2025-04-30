@@ -1,3 +1,6 @@
 - [ ] Entity/Log Classification
 - [ ] Common Data Protection
 - [ ] Swagger alternatives
+- [ ] Update the Event modeling: 
+  - [ ] Flow context
+  - [ ] Initiate Method
