@@ -2,9 +2,7 @@ using Funds.Abstractions;
 using Funds.Withdraw.ATM;
 using Microsoft.Extensions;
 using Vogen;
-[assembly: VogenDefaults(openApiSchemaCustomizations: 
-                OpenApiSchemaCustomizations.GenerateSwashbuckleMappingExtensionMethod |
-                OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]
+[assembly: VogenDefaults(openApiSchemaCustomizations: OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]
 
 const string MONGO_CONNECTION_KEY = "EvDbMongoDBConnection";
 
