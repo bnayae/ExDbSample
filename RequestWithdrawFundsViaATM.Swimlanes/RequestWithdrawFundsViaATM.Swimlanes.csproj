@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Funds.Withdraw.RequestWithdrawFundsViaATM</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EvDb.Core" Version="[3.0.11,4.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
+	</ItemGroup>
+</Project>

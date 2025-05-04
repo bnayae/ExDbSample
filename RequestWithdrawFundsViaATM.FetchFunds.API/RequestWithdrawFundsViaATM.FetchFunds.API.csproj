@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Funds.Withdraw.RequestWithdrawFundsViaATM</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.FetchFunds.Slice\RequestWithdrawFundsViaATM.FetchFunds.Slice.csproj" />
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Swimlanes\RequestWithdrawFundsViaATM.Swimlanes.csproj" />
+	</ItemGroup>
+
+</Project>

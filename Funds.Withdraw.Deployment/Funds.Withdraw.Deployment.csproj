@@ -3,20 +3,26 @@
 	<PropertyGroup>
 		<UserSecretsId>6cd5b52c-18f5-49f8-9bc5-4a97be148cad</UserSecretsId>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<IsPackable>false</IsPackable>
 	</PropertyGroup>
 
 	<PropertyGroup>
 		<RootNamespace>Funds.Withdraw</RootNamespace>
 	</PropertyGroup>
 
+
 	<ItemGroup>
-		<PackageReference Include="EvDb.Adapters.Store.EvDbMongoDB" Version="3.0.9" />
+		<PackageReference Include="EvDb.Adapters.Store.EvDbMongoDB" Version="[3.0.11,4.0.0)" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.2" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.1" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Funds.Withdraw.ATM.FetchFunds.Slice\Funds.Withdraw.ATM.FetchFunds.Slice.csproj" />
+	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.FetchFunds.API\RequestWithdrawFundsViaATM.FetchFunds.API.csproj" />
 	</ItemGroup>
+
 
 </Project>

@@ -1,6 +1,6 @@
-@Funds.Withdraw.ATM.API_HostAddress = http://localhost:5184
+@Funds.Withdraw.RequestWithdrawFundsViaATM.API_HostAddress = http://localhost:5184
 
-POST {{Funds.Withdraw.ATM.API_HostAddress}}/withdraw/atm/44445555-5717-4562-b3fc-2c963f661111
+POST {{Funds.Withdraw.RequestWithdrawFundsViaATM.API_HostAddress}}/withdraw/atm/44445555-5717-4562-b3fc-2c963f661111
 Accept: application/json
 Content-Type: application/json
 

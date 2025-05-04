@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	
+	<PropertyGroup>
+		<RootNamespace>Funds.Withdraw.RequestWithdrawFundsViaATM</RootNamespace>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Swimlanes\RequestWithdrawFundsViaATM.Swimlanes.csproj" />
+	</ItemGroup>
+
+</Project>

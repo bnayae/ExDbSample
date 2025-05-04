@@ -1,4 +1,8 @@
 ﻿[*.cs]
 
-# S1481: Unused local variables should be removed
+# Make all fields readonly
+dotnet_diagnostic.IDE0044.severity = warn  
+
+
+# CA2007: Consider calling ConfigureAwait on the awaited task
 dotnet_diagnostic.CA2007.severity = none

@@ -1,10 +1,13 @@
-﻿using System.ComponentModel;
-using System.Globalization;
+﻿using System.Globalization;
 using Vogen;
+
+#pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
 
 namespace Funds.Abstractions;
 
-#pragma warning disable S1210 // "Equals" and the comparison operators should be overridden when implementing "IComparable"
+/// <summary>
+/// The currency ISO 3 letter code
+/// </summary>
 [ValueObject<string>(Conversions.TypeConverter | Conversions.SystemTextJson,
     toPrimitiveCasting: CastOperator.Implicit,
     fromPrimitiveCasting: CastOperator.Implicit,
