@@ -1,8 +1,9 @@
-﻿using Funds.Abstractions;
+﻿using Core.Abstractions;
+using Funds.Abstractions;
 
 namespace Funds.Withdraw.RequestWithdrawFundsViaATM;
 
-internal sealed class FetchFundsFromAtm : IFetchFundsFromAtm
+internal sealed class FetchFundsFromAtm : ICommandEntry<FetchFundsFromAtmRequest>
 {
     private const string INITIATE_METHOD = "ATM";
 
@@ -17,7 +18,7 @@ internal sealed class FetchFundsFromAtm : IFetchFundsFromAtm
         _fundsFactory = fundsFactory;
     }
 
-    async Task IFetchFundsFromAtm.ProcessAsync(FetchFundsFromAtmRequest request,
+    async Task ICommandEntry<FetchFundsFromAtmRequest>.ProcessAsync(FetchFundsFromAtmRequest request,
                                         CancellationToken cancellationToken)
     {
         (AccountId account, FundsTransactionData data) = request;

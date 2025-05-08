@@ -21,5 +21,6 @@ internal partial class WithdrawFundsRequestOutbox
             Data = payload.Data,
             InitiateMethod = payload.InitiateMethod
         };
+        outbox.Add(message);
     }
 }

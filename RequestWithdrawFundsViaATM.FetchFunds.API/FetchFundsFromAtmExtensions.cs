@@ -7,10 +7,11 @@ using Vogen;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Funds.Withdraw.RequestWithdrawFundsViaATM;
+using Core.Abstractions;
 
 namespace Microsoft.Extensions;
 
-public static class FetchFundsExtensions
+public static class FetchFundsFromAtmApiExtensions
 {
     public static IEndpointRouteBuilder AddRequestWithdrawFundsViaATM(this IEndpointRouteBuilder app)
     {
@@ -20,7 +21,7 @@ public static class FetchFundsExtensions
         withdraw.MapPost("ATM/{account}", 
             async (AccountId account, 
             FundsTransactionData data,
-            IFetchFundsFromAtm slice) =>
+            ICommandEntry<FetchFundsFromAtmRequest> slice) =>
         {
             FetchFundsFromAtmRequest request = new(account, data);
             await slice.ProcessAsync(request);

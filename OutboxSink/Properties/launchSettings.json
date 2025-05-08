@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OutboxSink": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

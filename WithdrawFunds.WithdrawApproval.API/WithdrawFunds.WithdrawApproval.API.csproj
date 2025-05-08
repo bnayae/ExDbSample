@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\AwsProvider\AwsProvider.csproj" />
+	  <ProjectReference Include="..\WithdrawFunds.WithdrawApproval.Slice\WithdrawFunds.WithdrawApproval.Slice.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Abstractions\" />
+	</ItemGroup>
+
+</Project>

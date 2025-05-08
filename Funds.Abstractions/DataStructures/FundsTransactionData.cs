@@ -27,5 +27,4 @@ public readonly record struct FundsTransactionData
     /// The money amount
     /// </summary>
     public required double Amount { get; init; }
-
 }

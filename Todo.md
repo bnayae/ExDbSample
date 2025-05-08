@@ -4,3 +4,7 @@
 - [ ] Update the Event modeling: 
   - [ ] Flow context
   - [ ] Initiate Method
+- [ ] EvDb Analyzer of:
+  - [ ] In complete definitions that cause problems (outbox without messages, events without any event)
+  - [ ] Duplicate events/messages names
+  - [ ] Miss aligned setting like IEventsAdder (try to remove duplicate setting)

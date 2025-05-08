@@ -22,6 +22,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.FetchFunds.API\RequestWithdrawFundsViaATM.FetchFunds.API.csproj" />
+	  <ProjectReference Include="..\WithdrawFunds.WithdrawApproval.API\WithdrawFunds.WithdrawApproval.API.csproj" />
 	</ItemGroup>
 
 

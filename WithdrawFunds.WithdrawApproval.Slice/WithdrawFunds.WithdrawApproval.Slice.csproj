@@ -3,10 +3,10 @@
   <PropertyGroup>
 	  <RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
   </PropertyGroup>
-	
 
   <ItemGroup>
-    <ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
+    <ProjectReference Include="..\Core.Abstractions\Core.Abstractions.csproj" />
+    <ProjectReference Include="..\WithdrawFunds.Swimlanes\WithdrawFunds.Swimlanes.csproj" />
   </ItemGroup>
 
 </Project>

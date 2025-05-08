@@ -28,7 +28,8 @@ services.AddEvDb()
 
 #endregion //  EvDb
 
-services.AddFetchFundsSlice();
+services.AddFetchFundsSlice()
+        .AddWithdrawalApprovalSlice();
 
 
 WebApplication app = builder.Build();
