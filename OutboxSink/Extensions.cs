@@ -13,7 +13,7 @@ namespace Microsoft.Extensions;
 
 internal static class Extensions
 {
-    private readonly static string MONGODB_ENDPOINT = "mongodb://localhost:27017";
+    private const string MONGODB_ENDPOINT = "mongodb://localhost:27017";
 
     #region StartListenToChangeStreamAsync
 
@@ -21,13 +21,12 @@ internal static class Extensions
                                                             Func<string, Task> onChange,
                                                             CancellationToken cancellationToken)
     {
-        using var changeStream = await collection.WatchAsync();
+        using var changeStream = await collection.WatchAsync(cancellationToken: cancellationToken);
 
-        while ( !cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync())
+        while ( !cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync(cancellationToken))
         {
             foreach (var change in changeStream.Current)
             {
-                //var json = change.FullDocument.ToJson();
                 var message = change.FullDocument.ToJson() ?? "MISSING";
                 await onChange(message);
             }
@@ -38,12 +37,12 @@ internal static class Extensions
 
     #region OuboxTo
 
-    public static async Task ListenToOubox(this StreamSinkSetting setting ,CancellationToken cancellationToken)
+    public static async Task ListenToOutbox(this StreamSinkSetting setting ,CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string streamName, string queueName) = setting;
 
-        using var snsClient = AwsProviderFactory.CreateSnsClient();
-        using var sqsClient = AwsProviderFactory.CreateSqsClient();
+        using var snsClient = AWSProviderFactory.CreateSNSClient();
+        using var sqsClient = AWSProviderFactory.CreateSQSClient();
 
         // Create SNS topic if it doesn't exist
         string topicArn = await snsClient.GetOrCreateTopicAsync(streamName);
@@ -51,10 +50,10 @@ internal static class Extensions
 
         // Create SQS queue if it doesn't exist
         string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);
-        string queueArn = await sqsClient.GetQueueArnAsync(queueUrl);
+        string queueArn = await sqsClient.GetQueueARNAsync(queueUrl);
 
         // Allow SNS to send to SQS (Policy)
-        await sqsClient.SetSnsToSqsPolicyAsync(topicArn, queueUrl, queueArn);
+        await sqsClient.SetSNSToSQSPolicyAsync(topicArn, queueUrl, queueArn);
         // Subscribe SQS to SNS topic
         await snsClient.AllowSNSToSendToSQSAsync(topicArn, queueArn);
 
@@ -73,21 +72,11 @@ internal static class Extensions
         }, cancellationToken);
     }
 
-    public static async Task ListenToOubox  (this QueueSinkSetting setting, CancellationToken cancellationToken)
+    public static async Task ListenToOutbox  (this QueueSinkSetting setting, CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string queueName) = setting;
 
-        var sqsClient = AwsProviderFactory.CreateSqsClient();
-
-        #region var sqsClient = new AmazonSQSClient(...)
-
-        using var sqsClient = new AmazonSQSClient(CREDENTIALS, new AmazonSQSConfig
-        {
-            ServiceURL = AWS_ENDPOINT,
-            UseHttp = true
-        });
-
-        #endregion //  var sqsClient = new AmazonSQSClient(...)
+        using var sqsClient = AWSProviderFactory.CreateSQSClient();
 
         // Create SQS queue if it doesn't exist
         string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);

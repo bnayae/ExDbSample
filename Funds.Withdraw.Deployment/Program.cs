@@ -1,7 +1,5 @@
-using Funds.Abstractions;
-using Funds.Withdraw.RequestWithdrawFundsViaATM;
+using EvDb.Core;
 using Microsoft.Extensions;
-using System.Xml.Linq;
 using Vogen;
 [assembly: VogenDefaults(openApiSchemaCustomizations: OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]
 
@@ -28,8 +26,7 @@ services.AddEvDb()
 
 #endregion //  EvDb
 
-services.AddFetchFundsSlice()
-        .AddWithdrawalApprovalSlice();
+services.AddWithdrawalApprovalConsumer();
 
 
 WebApplication app = builder.Build();

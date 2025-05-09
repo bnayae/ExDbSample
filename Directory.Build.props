@@ -53,8 +53,6 @@
 		<Using Include="System.Text.Json" />
 		<Using Include="System.Diagnostics" />
 		<Using Include="System.ComponentModel.DataAnnotations" />
-		<Using Include="Microsoft.Extensions.Logging" />
-		<Using Include="EvDb.Core" />
 	</ItemGroup>
 
 </Project>

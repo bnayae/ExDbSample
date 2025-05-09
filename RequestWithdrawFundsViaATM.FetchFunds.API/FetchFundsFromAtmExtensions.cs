@@ -21,7 +21,7 @@ public static class FetchFundsFromAtmApiExtensions
         withdraw.MapPost("ATM/{account}", 
             async (AccountId account, 
             FundsTransactionData data,
-            ICommandEntry<FetchFundsFromAtmRequest> slice) =>
+            ICommandHandler<FetchFundsFromAtmRequest> slice) =>
         {
             FetchFundsFromAtmRequest request = new(account, data);
             await slice.ProcessAsync(request);

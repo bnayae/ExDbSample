@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Funds.Withdraw.WithdrawFunds;
 
-internal class WithdrawalApproval: ICommandEntry<WithdrawalApprovalRequest>
+internal class WithdrawalApproval: ICommandHandler<WithdrawalApprovalRequest>
 {
     private readonly ILogger<WithdrawalApproval> _logger;
     private readonly IEvDbWithdrawFundsRequestFactory _evDbFactory;
@@ -20,7 +20,7 @@ internal class WithdrawalApproval: ICommandEntry<WithdrawalApprovalRequest>
         _evDbFactory = evDbFactory;
     }
 
-    async Task ICommandEntry<WithdrawalApprovalRequest>.ProcessAsync(WithdrawalApprovalRequest request,
+    async Task ICommandHandler<WithdrawalApprovalRequest>.ProcessAsync(WithdrawalApprovalRequest request,
                                                CancellationToken cancellationToken)
     {
         (AccountId accountId, FundsTransactionData data, FundsInitiateMethod initiateMethod, double balance) = request;

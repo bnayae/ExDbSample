@@ -1,10 +1,6 @@
 ﻿using Funds.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Funds.Withdraw.WithdrawFunds;
 
 namespace Funds.Withdraw.WithdrawFunds;
 

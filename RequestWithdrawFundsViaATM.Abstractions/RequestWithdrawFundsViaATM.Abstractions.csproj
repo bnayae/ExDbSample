@@ -8,4 +8,9 @@
 		<ProjectReference Include="..\Funds.Withdraw.Abstractions\Funds.Withdraw.Abstractions.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Using Include="Microsoft.Extensions.Logging" />
+		<Using Include="EvDb.Core" />
+	</ItemGroup>
+
 </Project>

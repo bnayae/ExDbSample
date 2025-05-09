@@ -107,3 +107,4 @@ dotnet_style_object_initializer = true:suggestion
 dotnet_style_collection_initializer = true:suggestion
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_readonly_field = true:warning
+dotnet_diagnostic.CA1062.severity = suggestion

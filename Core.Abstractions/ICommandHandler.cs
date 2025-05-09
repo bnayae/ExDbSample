@@ -1,6 +1,10 @@
 ﻿namespace Core.Abstractions;
 
-public interface ICommandEntry<T>
+/// <summary>
+/// Command contract
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public interface ICommandHandler<in T>
 {
     /// <summary>
     /// Command entry.

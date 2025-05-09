@@ -1,5 +1,6 @@
 ﻿#pragma warning disable CA1303 // Do not pass literals as localized parameters
 
+using Microsoft.Extensions;
 using static Microsoft.Extensions.Extensions;
 const string DATABASE = "funds.withdraw";
 
@@ -17,5 +18,5 @@ var reactToWithdrawalRequestedViaATM = new StreamSinkSetting
 Console.WriteLine("Listening to Outbox");
 
 await Task.WhenAll( 
-        reactToWithdrawalRequestedViaATM.ListenToOubox(cancellationToken),
+        reactToWithdrawalRequestedViaATM.ListenToOutbox(cancellationToken),
         Task.CompletedTask);

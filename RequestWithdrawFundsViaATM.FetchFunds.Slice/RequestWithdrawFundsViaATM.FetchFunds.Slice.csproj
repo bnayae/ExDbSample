@@ -10,4 +10,9 @@
 	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Swimlanes\RequestWithdrawFundsViaATM.Swimlanes.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<Using Include="Microsoft.Extensions.Logging" />
+		<Using Include="EvDb.Core" />
+	</ItemGroup>
+
 </Project>

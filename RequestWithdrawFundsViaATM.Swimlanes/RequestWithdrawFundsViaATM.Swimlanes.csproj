@@ -11,4 +11,10 @@
 	<ItemGroup>
 		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
 	</ItemGroup>
+
+	<ItemGroup>
+		<Using Include="Microsoft.Extensions.Logging" />
+		<Using Include="EvDb.Core" />
+	</ItemGroup>
+
 </Project>

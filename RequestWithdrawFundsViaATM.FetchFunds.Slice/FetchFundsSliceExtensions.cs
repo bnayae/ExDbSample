@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions;
 
-public static class FetchFundsSliceDI
+public static class FetchFundsSliceExtensions
 {
     public static IServiceCollection TryAddFetchFundsSlice(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandEntry<FetchFundsFromAtmRequest>, FetchFundsFromAtm>();
+        services.TryAddSingleton<ICommandHandler<FetchFundsFromAtmRequest>, FetchFundsFromAtm>();
         return services;
     }
 }

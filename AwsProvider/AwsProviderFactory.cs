@@ -1,18 +1,19 @@
 ﻿using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SQS;
+#pragma warning disable S101 // Types should be named in PascalCase
 
 namespace Microsoft.Extensions;
 
-public static class AwsProviderFactory
+public static class AWSProviderFactory
 {
     private readonly static BasicAWSCredentials CREDENTIALS = new BasicAWSCredentials("test", "test");
     private const string AWS_ENDPOINT = "http://localhost:4566";
     private const string REGION = "us-east-1";
 
-    #region CreateSnsClient
+    #region CreateSNSClient
 
-    public static AmazonSimpleNotificationServiceClient CreateSnsClient()
+    public static AmazonSimpleNotificationServiceClient CreateSNSClient()
     {
         var config = new AmazonSimpleNotificationServiceConfig
         {
@@ -22,11 +23,11 @@ public static class AwsProviderFactory
         return new AmazonSimpleNotificationServiceClient(CREDENTIALS, config);
     }
 
-    #endregion //  CreateSnsClient
+    #endregion //  CreateSNSClient
 
-    #region CreateSqsClient
+    #region CreateSqsCreateSQSClientClient
 
-    public static AmazonSQSClient CreateSqsClient()
+    public static AmazonSQSClient CreateSQSClient()
     {
         var config = new AmazonSQSConfig
         {
@@ -36,5 +37,5 @@ public static class AwsProviderFactory
         return new AmazonSQSClient(CREDENTIALS, config);
     }
 
-    #endregion //  CreateSqsClient
+    #endregion //  CreateSQSClient
 }

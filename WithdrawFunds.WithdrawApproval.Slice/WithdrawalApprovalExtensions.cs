@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions;
 
-public static class WithdrawalApprovalDI
+public static class WithdrawalApprovalExtensions
 {
     public static IServiceCollection TryAddWithdrawalApprovalSlice(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandEntry<WithdrawalApprovalRequest>, WithdrawalApproval>();
+        services.TryAddSingleton<ICommandHandler<WithdrawalApprovalRequest>, WithdrawalApproval>();
         return services;
     }
 }

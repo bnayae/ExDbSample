@@ -3,7 +3,7 @@ using Funds.Abstractions;
 
 namespace Funds.Withdraw.RequestWithdrawFundsViaATM;
 
-internal sealed class FetchFundsFromAtm : ICommandEntry<FetchFundsFromAtmRequest>
+internal sealed class FetchFundsFromAtm : ICommandHandler<FetchFundsFromAtmRequest>
 {
     private const string INITIATE_METHOD = "ATM";
 
@@ -18,7 +18,7 @@ internal sealed class FetchFundsFromAtm : ICommandEntry<FetchFundsFromAtmRequest
         _fundsFactory = fundsFactory;
     }
 
-    async Task ICommandEntry<FetchFundsFromAtmRequest>.ProcessAsync(FetchFundsFromAtmRequest request,
+    async Task ICommandHandler<FetchFundsFromAtmRequest>.ProcessAsync(FetchFundsFromAtmRequest request,
                                         CancellationToken cancellationToken)
     {
         (AccountId account, FundsTransactionData data) = request;

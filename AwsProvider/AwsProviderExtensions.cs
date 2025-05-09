@@ -1,14 +1,18 @@
-﻿using Amazon.SimpleNotificationService;
+﻿// Ignore Spelling: sns
+// Ignore Spelling: sqs
+
+using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Core.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-
+#pragma warning disable S101 // Types should be named in PascalCase
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 
 namespace Microsoft.Extensions;
 
-public static class AwsProviderExtensions
+public static class AWSProviderExtensions
 {
     #region GetOrCreateTopicAsync
 
@@ -67,7 +71,7 @@ public static class AwsProviderExtensions
         {
             var createQueueResponse = await sqsClient.CreateQueueAsync(queueName);
             queueUrl = createQueueResponse.QueueUrl;
-            Console.WriteLine($"SQS queue: {queueUrl} created);
+            Console.WriteLine($"SQS queue: {queueUrl} created");
         }
         return queueUrl;
     }
@@ -76,7 +80,12 @@ public static class AwsProviderExtensions
 
     #region GetQueueArnAsync
 
-    public static async Task<string> GetQueueArnAsync(this AmazonSQSClient sqsClient, string queueUrl)
+#pragma warning disable CA1062 // Validate arguments of public methods
+#pragma warning disable CA1054 // URI-like parameters should not be strings
+#pragma warning restore CA1054 // URI-like parameters should not be strings
+#pragma warning disable CA1054 // URI-like parameters should not be strings
+    public static async Task<string> GetQueueARNAsync(this AmazonSQSClient sqsClient, string queueUrl)
+#pragma warning restore CA1054 // URI-like parameters should not be strings
     {
         var attrs = await sqsClient.GetQueueAttributesAsync(new GetQueueAttributesRequest
         {
@@ -88,66 +97,69 @@ public static class AwsProviderExtensions
         return arn;
     }
 
-    #endregion //  GetQueueArnAsync
+    #endregion // GetQueueARNAsync
 
-    #region SetSnsToSqsPolicyAsync
+    #region SetSNSToSQSPolicyAsync
 
-
+#pragma warning disable CA1054 // URI-like parameters should not be strings
     /// <summary>
     /// Allow SNS to send to SQS (Policy)
     /// </summary>
     /// <param name="sqsClient">The SQS client.</param>
-    /// <param name="topicArn">The topic arn.</param>
-    /// <param name="queueUrl">The queue URL.</param>
+    /// <param name="topicARN">The topic ARN.</param>
+    /// <param name="queueURL">The queue URL.</param>
+    /// <param name="queueARN">The queue ARN.</param>
     /// <returns></returns>
-    public static async Task SetSnsToSqsPolicyAsync(this AmazonSQSClient sqsClient, string topicArn, string queueUrl, string queueArn)
+    public static async Task SetSNSToSQSPolicyAsync(this AmazonSQSClient sqsClient,
+                                                    string topicARN,
+                                                    string queueURL,
+                                                    string queueARN)
     {
         string policy = $$"""
-{
-  "Version":"2012-10-17",
-  "Statement":[
+    {
+    "Version":"2012-10-17",
+    "Statement":[
     {
       "Sid":"AllowSNSPublish",
       "Effect":"Allow",
       "Principal":{"AWS":"*"},
       "Action":"sqs:SendMessage",
-      "Resource":"{{queueArn}}",
+      "Resource":"{{queueARN}}",
       "Condition":{
-        "ArnEquals":{"aws:SourceArn":"{{topicArn}}"}
+        "ArnEquals":{"aws:SourceArn":"{{topicARN}}"}
       }
     }
-  ]
-}
-""";
+    ]
+    }
+    """;
 
-        await sqsClient.SetQueueAttributesAsync(queueUrl, new Dictionary<string, string>
-{
-    { "Policy", policy }
-});
-        await sqsClient.SetQueueAttributesAsync(queueUrl, new Dictionary<string, string>
+        await sqsClient.SetQueueAttributesAsync(queueURL, new Dictionary<string, string>
         {
             { "Policy", policy }
         });
     }
+#pragma warning restore CA1054 // URI-like parameters should not be strings
 
-    #endregion //  SetSnsToSqsPolicyAsync
+    #endregion //  SetSNSToSQSPolicyAsync
 
     #region AllowSNSToSendToSQSAsync
+#pragma warning disable CA1031 // Do not catch general exception types
+#pragma warning restore CA1062 // Validate arguments of public methods
 
     public static async Task AllowSNSToSendToSQSAsync(
                             this AmazonSimpleNotificationServiceClient snsClient,
-                            string topicArn,
-                            string queueArn)
+                            string topicARN,
+                            string queueARN)
     {
         // Check if subscription exists, if not create it
-        var snsSubscriptions = await snsClient.ListSubscriptionsByTopicAsync(topicArn);
+        var snsSubscriptions = await snsClient.ListSubscriptionsByTopicAsync(topicARN);
         Console.WriteLine($"Found {snsSubscriptions.Subscriptions?.Count ?? 0} subscriptions for SNS topic");
 
         bool subscriptionExists = false;
         foreach (var sub in snsSubscriptions.Subscriptions ?? [])
         {
             Console.WriteLine($"  - {sub.Protocol}: {sub.Endpoint}");
-            if (sub.Protocol == "sqs" && sub.Endpoint.Contains(queueArn))
+            if (sub.Protocol == "sqs" && sub.Endpoint.Contains(queueARN, StringComparison.OrdinalIgnoreCase))
             {
                 subscriptionExists = true;
             }
@@ -160,9 +172,9 @@ public static class AwsProviderExtensions
             {
                 var subscribeResponse = await snsClient.SubscribeAsync(new SubscribeRequest
                 {
-                    TopicArn = topicArn,
+                    TopicArn = topicARN,
                     Protocol = "sqs",
-                    Endpoint = queueArn
+                    Endpoint = queueARN
                 });
                 Console.WriteLine($"Created subscription: {subscribeResponse.SubscriptionArn}");
             }
@@ -172,39 +184,28 @@ public static class AwsProviderExtensions
             }
         }
     }
+#pragma warning restore CA1031 // Do not catch general exception types
 
     #endregion //  AllowSNSToSendToSQSAsync
 
-    #region StartListenToChangeStreamAsync
 
-    public static async Task StartListenToChangeStreamAsync(this IMongoCollection<BsonDocument> collection,
-                                                            Func<string, Task> onChange,
-                                                            CancellationToken cancellationToken)
-    {
-        using var changeStream = await collection.WatchAsync();
+    #region AddDirectSQSProcessor
 
-        while (!cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync())
-        {
-            foreach (var change in changeStream.Current)
-            {
-                //var json = change.FullDocument.ToJson();
-                var message = change.FullDocument.ToJson() ?? "MISSING";
-                await onChange(message);
-            }
-        }
-    }
-
-    #endregion //  StartListenToChangeStreamAsync
-
-    #region AddSqsProcessor
-
-    public static IServiceCollection AddSqsProcessor<T>(this IServiceCollection services, string queueName)
+    /// <summary>
+    /// Adds the SQS processor.
+    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// </summary>
+    /// <typeparam name="T">The type of both the SQS message and the command's request.</typeparam>
+    /// <param name="services">The services.</param>
+    /// <param name="queueName">Name of the queue.</param>
+    /// <returns></returns>
+    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, string queueName)
     {
         services.AddHostedService(sp =>
         {
-            ICommandEntry<T> commandEntry = sp.GetRequiredService<ICommandEntry<T>>();
-            var logger = sp.GetRequiredService<ILogger<SqsProcessor<T>>>();
-            var host = new SqsProcessor<T>(
+            ICommandHandler<T> commandEntry = sp.GetRequiredService<ICommandHandler<T>>();
+            var logger = sp.GetRequiredService<ILogger<SQSDirectProcessor<T>>>();
+            var host = new SQSDirectProcessor<T>(
                 logger,
                 commandEntry,
                 queueName);
@@ -213,5 +214,37 @@ public static class AwsProviderExtensions
         return services;
     }
 
-    #endregion //  AddSqsProcessor
+    #endregion //  AddDirectSQSProcessor
+
+    #region AddBridgedSQSProcessor
+
+    /// <summary>
+    /// Adds the SQS processor.
+    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// </summary>
+    /// <typeparam name="TMessage">The type of both the SQS message.</typeparam>
+    /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
+    /// <param name="services">The services.</param>
+    /// <param name="queueName">Name of the queue.</param>
+    /// <returns></returns>
+    public static IServiceCollection AddBridgedSQSProcessor<TMessage,TRequest>(
+                                            this IServiceCollection services, 
+                                            string queueName) 
+    {
+        services.AddHostedService(sp =>
+        {
+            ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
+            IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
+            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage,TRequest>>>();
+            var host = new SQSBridgedProcessor<TMessage, TRequest>(
+                logger,
+                bridge,
+                commandEntry,
+                queueName);
+            return host;
+        });
+        return services;
+    }
+
+    #endregion //  AddBridgedSQSProcessor
 }

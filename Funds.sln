@@ -59,6 +59,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Abstractions", "Core.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwsProvider", "AwsProvider\AwsProvider.csproj", "{E9F1F578-D551-42AD-B67E-D0DD7CEC3E18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithdrawFunds.WithdrawApproval.Processor", "WithdrawFunds.WithdrawApproval.Processor\WithdrawFunds.WithdrawApproval.Processor.csproj", "{D804D14D-0C2F-4E44-A309-96BC9C34CD12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{E9F1F578-D551-42AD-B67E-D0DD7CEC3E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9F1F578-D551-42AD-B67E-D0DD7CEC3E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9F1F578-D551-42AD-B67E-D0DD7CEC3E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D804D14D-0C2F-4E44-A309-96BC9C34CD12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D804D14D-0C2F-4E44-A309-96BC9C34CD12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D804D14D-0C2F-4E44-A309-96BC9C34CD12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D804D14D-0C2F-4E44-A309-96BC9C34CD12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +159,7 @@ Global
 		{BAB073B6-CF98-4778-BD65-AB3D88ECFBBC} = {6CE0F274-84F7-4FC1-AD2B-2D97D7D5808C}
 		{B070694B-BA41-4C0E-B328-08ADBFCDCD17} = {6CE0F274-84F7-4FC1-AD2B-2D97D7D5808C}
 		{E9F1F578-D551-42AD-B67E-D0DD7CEC3E18} = {6CE0F274-84F7-4FC1-AD2B-2D97D7D5808C}
+		{D804D14D-0C2F-4E44-A309-96BC9C34CD12} = {EA0E4C38-2795-4F93-AF56-95EE301550F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B09486AB-7BC0-49ED-9D6A-A748550F7653}

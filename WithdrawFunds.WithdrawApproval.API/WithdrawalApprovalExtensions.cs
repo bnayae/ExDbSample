@@ -1,3 +1,4 @@
+using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Funds.Withdraw.WithdrawFunds;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,7 +11,8 @@ public static class FetchFundsExtensions
     public static IServiceCollection AddWithdrawalApprovalConsumer(this IServiceCollection services)
     {
         services.TryAddWithdrawalApprovalSlice();
-        services.AddSqsProcessor<WithdrawalApprovalRequest>("WithdrawApprover");
+        services.TryAddWithdrawApprovalBridge();
+        services.AddBridgedSQSProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>("WithdrawApprover");
 
         return services;
     }
