@@ -15,6 +15,26 @@ internal static class Extensions
 {
     private readonly static string MONGODB_ENDPOINT = "mongodb://localhost:27017";
 
+    #region StartListenToChangeStreamAsync
+
+    public static async Task StartListenToChangeStreamAsync(this IMongoCollection<BsonDocument> collection,
+                                                            Func<string, Task> onChange,
+                                                            CancellationToken cancellationToken)
+    {
+        using var changeStream = await collection.WatchAsync();
+
+        while ( !cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync())
+        {
+            foreach (var change in changeStream.Current)
+            {
+                //var json = change.FullDocument.ToJson();
+                var message = change.FullDocument.ToJson() ?? "MISSING";
+                await onChange(message);
+            }
+        }
+    }
+
+    #endregion //  StartListenToChangeStreamAsync
 
     #region OuboxTo
 
@@ -57,7 +77,17 @@ internal static class Extensions
     {
         (string dbName, string collectionName, string queueName) = setting;
 
-        using var sqsClient = AwsProviderFactory.CreateSqsClient();
+        var sqsClient = AwsProviderFactory.CreateSqsClient();
+
+        #region var sqsClient = new AmazonSQSClient(...)
+
+        using var sqsClient = new AmazonSQSClient(CREDENTIALS, new AmazonSQSConfig
+        {
+            ServiceURL = AWS_ENDPOINT,
+            UseHttp = true
+        });
+
+        #endregion //  var sqsClient = new AmazonSQSClient(...)
 
         // Create SQS queue if it doesn't exist
         string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);
