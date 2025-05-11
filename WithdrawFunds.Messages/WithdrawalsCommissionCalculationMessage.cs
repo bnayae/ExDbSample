@@ -1,5 +1,4 @@
-﻿using EvDb.Core;
-using Funds.Abstractions;
+﻿using Funds.Abstractions;
 
 namespace Funds.Withdraw.WithdrawFunds;
 
@@ -9,7 +8,8 @@ namespace Funds.Withdraw.WithdrawFunds;
 /// <param name="AccountId">Account identifier</param>
 /// <param name="Data">Common transaction data</param>
 /// <param name="InitiateMethod">The method of initiating the funds operation (like ATM, Teller, PayPal, etc.)</param>
-[EvDbDefineMessagePayload("withdrawals-commission-calculation")]
-public readonly partial record struct WithdrawalsCommissionCalculationMessage(AccountId AccountId,
+[EvDbAttachChannel(OutboxChannels.Todo)]
+[EvDbDefineMessagePayload("calculate-withdrawals-commission")]
+public readonly partial record struct CalculateWithdrawalsCommissionMessage(AccountId AccountId,
                                                       FundsTransactionData Data,
                                                       FundsInitiateMethod InitiateMethod);

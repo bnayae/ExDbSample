@@ -7,9 +7,9 @@ namespace Microsoft.Extensions;
 
 public static class FetchFundsSliceExtensions
 {
-    public static IServiceCollection TryAddFetchFundsSlice(this IServiceCollection services)
+    public static IServiceCollection TryAddFetchFundsCommand(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandHandler<FetchFundsFromAtmRequest>, FetchFundsFromAtm>();
+        services.TryAddSingleton<ICommandHandler<FetchFundsFromAtmRequest>, FetchFundsFromAtmCommand>();
         return services;
     }
 }

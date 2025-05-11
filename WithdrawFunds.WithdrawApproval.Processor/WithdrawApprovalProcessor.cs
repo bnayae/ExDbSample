@@ -7,11 +7,13 @@ using Microsoft.Extensions.Logging;
 
 namespace WithdrawFunds.WithdrawApproval.Processor;
 
-public sealed class WithdrawApprovalBridge : IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
+internal sealed class WithdrawApprovalProcessor : IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
 {
     private readonly IEvDbAccountFundsFactory _evdbFactory;
 
-    public WithdrawApprovalBridge(ILogger<WithdrawApprovalBridge> logger, IEvDbAccountFundsFactory evdbFactory)
+    public WithdrawApprovalProcessor(
+                    ILogger<WithdrawApprovalProcessor> logger,
+                    IEvDbAccountFundsFactory evdbFactory)
     {
         _evdbFactory = evdbFactory;
     }

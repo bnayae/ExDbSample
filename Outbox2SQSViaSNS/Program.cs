@@ -8,6 +8,7 @@ using var cts = new CancellationTokenSource();
 var cancellationToken = cts.Token;
 
 // TODO: environment aware
+
 var reactToWithdrawalRequestedViaATM = new StreamSinkSetting
 {
     DbName = DATABASE,
@@ -16,8 +17,20 @@ var reactToWithdrawalRequestedViaATM = new StreamSinkSetting
     QueueName = "WithdrawApprover",
 };
 
+var reactToCalculateWithdrawalsCommission = new StreamSinkSetting
+{
+    DbName = DATABASE,
+    CollectionName = "dev_Withdraw_Funds_Request_outbox",
+    QueueName = "CalculateWithdrawalsCommission",
+};
+
 Console.WriteLine("Listening to Outbox");
 
 await Task.WhenAll(
         reactToWithdrawalRequestedViaATM.ListenToOutbox(cancellationToken),
-        Task.CompletedTask);
+        reactToCalculateWithdrawalsCommission.ListenToOutbox(meta =>
+                                                    // meta.Channel == "todo" && 
+                                                    meta.MessageType == "calculate-withdrawals-commission",
+                                                    cancellationToken));
+
+// CalculateWithdrawalsCommissionMessage

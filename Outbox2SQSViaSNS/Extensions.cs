@@ -1,5 +1,7 @@
 ﻿using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS.Model;
+using EvDb.Adapters.Store.Internals;
+using EvDb.Core;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -31,7 +33,27 @@ internal static class Extensions
 
     #region OuboxTo
 
+    /// <summary>
+    /// Listens to the outbox and sends messages to SQS.
+    /// </summary>
+    /// <param name="setting"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task ListenToOutbox(this StreamSinkSetting setting, CancellationToken cancellationToken)
+    {
+        await setting.ListenToOutbox(_ => true, cancellationToken);
+    }
+
+    /// <summary>
+    /// Listens to the outbox and sends messages to SQS based on a filter.
+    /// </summary>
+    /// <param name="setting"></param>
+    /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task ListenToOutbox(this StreamSinkSetting setting,
+                                            Func<IEvDbMessageMeta, bool> filter,
+                                            CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string streamName, string queueName) = setting;
 
@@ -68,6 +90,22 @@ internal static class Extensions
 
         await collection.StartListenToChangeStreamAsync(async change =>
         {
+            IEvDbMessageMeta meta = ToMetadata(change);
+            if (filter != null && !filter(meta))
+            {
+                return;
+            }
+
+            Console.WriteLine($"""
+                Sending message 
+                      to:
+                          DB:{dbName}  
+                          Collection:{collectionName} 
+                      Into:
+                          SQS:{queueName} via 
+                          SNS:{streamName}
+                """);
+
             var request = new PublishRequest
             {
                 TopicArn = topicArn,
@@ -78,8 +116,29 @@ internal static class Extensions
 
     }
 
+    /// <summary>
+    /// Listens to the outbox and sends messages to SQS.
+    /// </summary>
+    /// <param name="setting"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public static async Task ListenToOutbox(this QueueSinkSetting setting, CancellationToken cancellationToken)
     {
+        await setting.ListenToOutbox(_ => true, cancellationToken);
+    }
+
+    /// <summary>
+    /// Listens to the outbox and sends messages to SQS based on a filter.
+    /// </summary>
+    /// <param name="setting"></param>
+    /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public static async Task ListenToOutbox(this QueueSinkSetting setting,
+                                            Func<IEvDbMessageMeta, bool> filter,
+                                            CancellationToken cancellationToken)
+    {
+
         (string dbName, string collectionName, string queueName) = setting;
 
         using var sqsClient = AWSProviderFactory.CreateSQSClient();
@@ -96,6 +155,20 @@ internal static class Extensions
         Console.ResetColor();
         await collection.StartListenToChangeStreamAsync(async change =>
         {
+            IEvDbMessageMeta meta = ToMetadata(change);
+            if (filter != null && !filter(meta))
+            {
+                return;
+            }
+
+            Console.WriteLine($"""
+                Sending message 
+                      to:
+                          DB:{dbName}  
+                          Collection:{collectionName} 
+                      Into:
+                          SQS:{queueName} 
+                """);
             var request = new SendMessageRequest
             {
                 QueueUrl = queueUrl,
@@ -105,18 +178,23 @@ internal static class Extensions
         }, cancellationToken);
 
     }
-    public static async Task WriteDocumentToCollectionAsync(this IMongoCollection<BsonDocument> collection, BsonDocument document, CancellationToken cancellationToken)
-    {
-        try
-        {
-            await collection.InsertOneAsync(document, cancellationToken: cancellationToken);
-            Console.WriteLine("Document successfully written to the collection.");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"An error occurred while writing the document: {ex.Message}");
-        }
-    }
 
     #endregion //  OuboxTo
+
+    #region ToMetadata
+
+    /// <summary>
+    /// Checks the filter for the message.
+    /// </summary>
+    /// <param name="change"></param>
+    /// <returns></returns>
+    private static IEvDbMessageMeta ToMetadata(string change)
+    {
+        var doc = BsonDocument.Parse(change);
+
+        IEvDbMessageMeta meta = doc.ToMessageMeta();
+        return meta;
+    }
+
+    #endregion //  ToMetadata
 }

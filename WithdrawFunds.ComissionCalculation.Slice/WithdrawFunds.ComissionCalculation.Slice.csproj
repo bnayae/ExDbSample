@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
-  </ItemGroup>
-	
+	<ItemGroup>
+		<ProjectReference Include="..\Core.Abstractions\Core.Abstractions.csproj" />
+		<ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
+		<ProjectReference Include="..\WithdrawFunds.Swimlanes\WithdrawFunds.Swimlanes.csproj" />
+	</ItemGroup>
+
 	<ItemGroup>
 		<Using Include="Microsoft.Extensions.Logging" />
 		<Using Include="EvDb.Core" />

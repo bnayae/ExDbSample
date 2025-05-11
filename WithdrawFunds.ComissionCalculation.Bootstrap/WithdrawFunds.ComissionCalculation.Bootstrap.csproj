@@ -9,8 +9,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\AwsProvider\AwsProvider.csproj" />
-	  <ProjectReference Include="..\WithdrawFunds.WithdrawApproval.Processor\WithdrawFunds.WithdrawApproval.Processor.csproj" />
+		<ProjectReference Include="..\AwsProvider\AwsProvider.csproj" />
+		<ProjectReference Include="..\WithdrawFunds.ComissionCalculation.Processor\WithdrawFunds.ComissionCalculation.Processor.csproj" />
 	</ItemGroup>
 
 </Project>

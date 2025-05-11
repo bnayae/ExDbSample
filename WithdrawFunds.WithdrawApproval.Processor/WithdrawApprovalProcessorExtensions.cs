@@ -7,11 +7,11 @@ using WithdrawFunds.WithdrawApproval.Processor;
 
 namespace Microsoft.Extensions;
 
-public static class WithdrawApprovalBridgeExtensions
+public static class WithdrawApprovalProcessorExtensions
 {
-    public static IServiceCollection TryAddWithdrawApprovalBridge(this IServiceCollection services)
+    public static IServiceCollection TryAddWithdrawApprovalProcessor(this IServiceCollection services)
     {
-        services.TryAddSingleton<IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>, WithdrawApprovalBridge>();
+        services.TryAddSingleton<IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>, WithdrawApprovalProcessor>();
         return services;
     }
 }

@@ -21,12 +21,19 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
 {
     private readonly ILogger _logger;
     private readonly Func<T, CancellationToken, Task> _messageHandler;
-    private readonly Func<IEvDbMessageMeta, bool>? _filter;
+    private readonly Func<IEvDbMessageMeta, bool> _filter;
     private readonly string _queueName;
 
+    /// <summary>
+    /// Base class for SQS processors hosting.
+    /// </summary>
+    /// <param name="logger"></param>
+    /// <param name="messageHandler"></param>
+    /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="queueName"></param>
     protected SQSProcessorBase(ILogger logger,
                         Func<T, CancellationToken, Task> messageHandler,
-                        Func<IEvDbMessageMeta, bool>? filter,
+                        Func<IEvDbMessageMeta, bool> filter,
                         string queueName)
     {
         _logger = logger;
@@ -35,6 +42,12 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
         _queueName = queueName;
     }
 
+    /// <summary>
+    /// Executes the SQS processor.
+    /// </summary>
+    /// <param name="stoppingToken"></param>
+    /// <returns></returns>
+    /// <exception cref="JsonException"></exception>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         using AmazonSQSClient sqsClient = AWSProviderFactory.CreateSQSClient();
@@ -63,7 +76,7 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
                     IEvDbMessageMeta meta = message.GetMetadata();
 
                     // TODO: Filter Metrics (include vs. exclude)
-                    if (_filter?.Invoke(meta) ?? true)
+                    if (_filter.Invoke(meta))
                     {
                         T body = JsonSerializer.Deserialize<T>(message.Payload) ?? throw new JsonException($"failed to serialize `{typeof(T).Name}`");
                         _logger.ProcessingOutboxMessage(meta.StreamCursor.ToString(), meta.EventType, meta.MessageType);

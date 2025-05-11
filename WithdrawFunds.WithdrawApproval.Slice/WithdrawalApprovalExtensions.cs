@@ -7,9 +7,9 @@ namespace Microsoft.Extensions;
 
 public static class WithdrawalApprovalExtensions
 {
-    public static IServiceCollection TryAddWithdrawalApprovalSlice(this IServiceCollection services)
+    public static IServiceCollection TryAddWithdrawalApprovalCommand(this IServiceCollection services)
     {
-        services.TryAddSingleton<ICommandHandler<WithdrawalApprovalRequest>, WithdrawalApproval>();
+        services.TryAddSingleton<ICommandHandler<WithdrawalApprovalRequest>, WithdrawalApprovalCommand>();
         return services;
     }
 }

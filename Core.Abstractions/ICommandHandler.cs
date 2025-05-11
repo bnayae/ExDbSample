@@ -7,10 +7,10 @@
 public interface ICommandHandler<in T>
 {
     /// <summary>
-    /// Command entry.
+    /// Execute the command.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    Task ProcessAsync(T request, CancellationToken cancellationToken = default);
+    Task ExecuteAsync(T request, CancellationToken cancellationToken = default);
 }

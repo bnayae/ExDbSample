@@ -1,4 +1,6 @@
+using Funds.Withdraw;
 using Microsoft.Extensions;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Vogen;
 [assembly: VogenDefaults(openApiSchemaCustomizations: OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]
 
@@ -15,8 +17,11 @@ services.AddSwaggerGen(o => o.SchemaFilter<VogenSchemaFilterInFunds_Withdraw_Dep
 #endregion //  Common Code
 
 
+services.AddTypedClients();
+
 services.AddRequestWithdrawFundsViaATM()
-        .AddWithdrawalApprovalConsumer();
+        .AddWithdrawalApprovalConsumer()
+        .AddCommissionCalculationConsumer();
 
 builder.AddRequestWithdrawFundsViaATMSwimlanes()
         .AddWithdrawFundsSwimlanes();
@@ -38,5 +43,10 @@ app.UseHttpsRedirection();
 
 app.UseRequestWithdrawFundsViaATM();
 
+// Start mock servers
+using var cts = new CancellationTokenSource();
+WireMockBootstrap.StartWireMock(cts.Token);
 
 await app.RunAsync();
+
+await cts.CancelAsync();   

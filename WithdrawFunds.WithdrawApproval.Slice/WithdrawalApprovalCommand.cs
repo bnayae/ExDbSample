@@ -3,19 +3,19 @@ using Funds.Abstractions;
 
 namespace Funds.Withdraw.WithdrawFunds;
 
-internal class WithdrawalApproval : ICommandHandler<WithdrawalApprovalRequest>
+internal class WithdrawalApprovalCommand : ICommandHandler<WithdrawalApprovalRequest>
 {
-    private readonly ILogger<WithdrawalApproval> _logger;
+    private readonly ILogger<WithdrawalApprovalCommand> _logger;
     private readonly IEvDbWithdrawFundsRequestFactory _evDbFactory;
 
-    public WithdrawalApproval(ILogger<WithdrawalApproval> logger,
+    public WithdrawalApprovalCommand(ILogger<WithdrawalApprovalCommand> logger,
                               IEvDbWithdrawFundsRequestFactory evDbFactory)
     {
         _logger = logger;
         _evDbFactory = evDbFactory;
     }
 
-    async Task ICommandHandler<WithdrawalApprovalRequest>.ProcessAsync(
+    async Task ICommandHandler<WithdrawalApprovalRequest>.ExecuteAsync(
                                                 WithdrawalApprovalRequest request,
                                                 CancellationToken cancellationToken)
     {

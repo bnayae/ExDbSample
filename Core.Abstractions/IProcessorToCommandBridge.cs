@@ -1,17 +1,18 @@
 ﻿namespace Core.Abstractions;
 
 /// <summary>
-/// Bridge between a message consumption to a command's request.
+/// Bridge between a message consumption to a command's message,
+/// And add processor logic between a message consumption to a command's invocation.
 /// </summary>
 /// <typeparam name="TMessage">The type of the message.</typeparam>
-/// <typeparam name="TRequest">The type of the command's request.</typeparam>
+/// <typeparam name="TRequest">The type of the command's message.</typeparam>
 public interface IProcessorToCommandBridge<in TMessage, TRequest>
 {
     /// <summary>
-    /// Bridge between a message consumption to a command's request.
+    /// Bridge between a message consumption to a command's message.
     /// </summary>
-    /// <param name="request">The request.</param>
+    /// <param name="message">The message.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    Task<TRequest> BridgeAsync(TMessage request, CancellationToken cancellationToken = default);
+    Task<TRequest> BridgeAsync(TMessage message, CancellationToken cancellationToken = default);
 }

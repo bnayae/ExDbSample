@@ -201,18 +201,7 @@ public static class AWSProviderExtensions
     /// <returns></returns>
     public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, string queueName)
     {
-        services.AddHostedService(sp =>
-        {
-            ICommandHandler<T> commandEntry = sp.GetRequiredService<ICommandHandler<T>>();
-            var logger = sp.GetRequiredService<ILogger<SQSDirectProcessor<T>>>();
-            var host = new SQSDirectProcessor<T>(
-                logger,
-                commandEntry,
-                null,
-                queueName);
-            return host;
-        });
-        return services;
+        return services.AddDirectSQSProcessor<T>(_ => true, queueName);
     }
 
     /// <summary>
@@ -228,10 +217,12 @@ public static class AWSProviderExtensions
     {
         services.AddHostedService(sp =>
         {
+            IProcessorToCommand<T>? processor = sp.GetService<IProcessorToCommand<T>>();
             ICommandHandler<T> commandEntry = sp.GetRequiredService<ICommandHandler<T>>();
             var logger = sp.GetRequiredService<ILogger<SQSDirectProcessor<T>>>();
             var host = new SQSDirectProcessor<T>(
                 logger,
+                processor,
                 commandEntry,
                 filter,
                 queueName);
@@ -257,23 +248,10 @@ public static class AWSProviderExtensions
                                             this IServiceCollection services,
                                             string queueName)
     {
-        services.AddHostedService(sp =>
-        {
-            ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
-            IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
-            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage, TRequest>>>();
-            var host = new SQSBridgedProcessor<TMessage, TRequest>(
-                logger,
-                bridge,
-                commandEntry,
-                null,
-                queueName);
-            return host;
-        });
-        return services;
+        return services.AddBridgedSQSProcessor<TMessage, TRequest>(_ => true, queueName);
     }
 
-    /// <summary>
+    /// <summary>   
     /// Adds the SQS processor.
     /// This method registers a hosted service that processes messages from an SQS queue into a command.
     /// </summary>
@@ -284,8 +262,8 @@ public static class AWSProviderExtensions
     /// <param name="queueName">Name of the queue.</param>
     /// <returns></returns>
     public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
-                                            this IServiceCollection services,
-                                            Func<IEvDbMessageMeta, bool> filter,
+                                                this IServiceCollection services,
+                                                Func<IEvDbMessageMeta, bool> filter,
                                             string queueName)
     {
         services.AddHostedService(sp =>

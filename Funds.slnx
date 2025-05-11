@@ -41,6 +41,8 @@
   </Folder>
   <Folder Name="/Flows/Withdraw Funds/Slices/" Id="c7e22993-e7d8-d12b-acb2-78fc51d6fd69" />
   <Folder Name="/Flows/Withdraw Funds/Slices/Comission Calculation/" Id="c4aec365-15c8-8763-dff7-74c5fe403254">
+    <Project Path="WithdrawFunds.ComissionCalculation.Bootstrap/WithdrawFunds.ComissionCalculation.Bootstrap.csproj" Id="b2250a9c-92b6-4f62-81ac-62dafc42f9fd" />
+    <Project Path="WithdrawFunds.ComissionCalculation.Processor/WithdrawFunds.ComissionCalculation.Processor.csproj" Id="6129b925-0198-4191-937d-ac376dcb9386" />
     <Project Path="WithdrawFunds.ComissionCalculation.Slice/WithdrawFunds.ComissionCalculation.Slice.csproj" />
   </Folder>
   <Folder Name="/Flows/Withdraw Funds/Slices/Withdraw Approval/" Id="726bf218-564c-c8b4-8402-d3232186660c">

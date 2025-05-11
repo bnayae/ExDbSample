@@ -12,7 +12,7 @@ public static class FetchFundsFromAtmApiExtensions
 {
     public static IServiceCollection AddRequestWithdrawFundsViaATM(this IServiceCollection services)
     {
-        services.TryAddFetchFundsSlice();
+        services.TryAddFetchFundsCommand();
         return services;
     }
 
@@ -27,7 +27,7 @@ public static class FetchFundsFromAtmApiExtensions
             ICommandHandler<FetchFundsFromAtmRequest> slice) =>
         {
             FetchFundsFromAtmRequest request = new(account, data);
-            await slice.ProcessAsync(request);
+            await slice.ExecuteAsync(request);
             return Results.Ok();
         });
         return app;

@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WithdrawFunds.ComissionCalculation.Slice\WithdrawFunds.ComissionCalculation.Slice.csproj" />
+	</ItemGroup>
+
+
+</Project>
