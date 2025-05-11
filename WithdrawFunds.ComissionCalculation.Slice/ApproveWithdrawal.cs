@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Funds.Withdraw.WithdrawFunds.WithdrawApproval.Slice;
+﻿namespace Funds.Withdraw.WithdrawFunds.WithdrawApproval.Slice;
 
 internal class ApproveWithdrawal
 {
@@ -15,7 +9,7 @@ internal class ApproveWithdrawal
     public ApproveWithdrawal(ILogger<ApproveWithdrawal> logger,
                           IFundsCommissionPolicy commissionPolicy,
                           IFundsSegmentation segmentation)
-	{
+    {
         _logger = logger;
         _commissionPolicy = commissionPolicy;
         _segmentation = segmentation;
@@ -23,6 +17,6 @@ internal class ApproveWithdrawal
 
     //public Task ApproveWithdrawalAsync(FundsWithdrawalRequested message)
     //{
-        
+
     //}
 }

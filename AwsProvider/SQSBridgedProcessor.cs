@@ -16,12 +16,12 @@ internal class SQSBridgedProcessor<TMessage, TRequest> : SQSProcessorBase<TMessa
                         IProcessorToCommandBridge<TMessage, TRequest> bridge,
                         ICommandHandler<TRequest> commandHandler,
                         Func<IEvDbMessageMeta, bool>? filter,
-                        string queueName) : 
-                            base(logger, (m,ct) => MessageBridging(bridge, commandHandler, m, ct), filter, queueName)
+                        string queueName) :
+                            base(logger, (m, ct) => MessageBridging(bridge, commandHandler, m, ct), filter, queueName)
     {
     }
 
-    private static async Task MessageBridging(IProcessorToCommandBridge<TMessage, TRequest> bridge, 
+    private static async Task MessageBridging(IProcessorToCommandBridge<TMessage, TRequest> bridge,
                                              ICommandHandler<TRequest> commandHandler,
                                              TMessage message,
                                              CancellationToken cancellationToken)

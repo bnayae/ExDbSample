@@ -2,7 +2,6 @@
 
 using EvDb.Core;
 using Microsoft.Extensions.DependencyInjection;
-using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Microsoft.Extensions.Hosting;
 
 using static Funds.Abstractions.FundsConstants.Swimlanes;

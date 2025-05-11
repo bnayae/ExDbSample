@@ -1,11 +1,11 @@
 ﻿using Amazon.SQS;
 using Amazon.SQS.Model;
 using AwsProvider;
+using EvDb.Adapters.Store.Internals;
 using EvDb.Core;
 using EvDb.Core.Adapters;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson;
-using EvDb.Adapters.Store.Internals;
 #pragma warning disable S101 // Types should be named in PascalCase
 
 

@@ -1,6 +1,4 @@
-﻿using EvDb.Core;
-
-namespace Funds.Withdraw.WithdrawFunds;
+﻿namespace Funds.Withdraw.WithdrawFunds;
 
 [EvDbAttachEventType<FundsWithdrawalApprovedEvent>]
 [EvDbAttachEventType<FundsWithdrawalDeclinedEvent>]

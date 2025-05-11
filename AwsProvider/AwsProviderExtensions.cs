@@ -253,15 +253,15 @@ public static class AWSProviderExtensions
     /// <param name="services">The services.</param>
     /// <param name="queueName">Name of the queue.</param>
     /// <returns></returns>
-    public static IServiceCollection AddBridgedSQSProcessor<TMessage,TRequest>(
-                                            this IServiceCollection services, 
-                                            string queueName) 
+    public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
+                                            this IServiceCollection services,
+                                            string queueName)
     {
         services.AddHostedService(sp =>
         {
             ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
             IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
-            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage,TRequest>>>();
+            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage, TRequest>>>();
             var host = new SQSBridgedProcessor<TMessage, TRequest>(
                 logger,
                 bridge,
@@ -283,16 +283,16 @@ public static class AWSProviderExtensions
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
     /// <param name="queueName">Name of the queue.</param>
     /// <returns></returns>
-    public static IServiceCollection AddBridgedSQSProcessor<TMessage,TRequest>(
+    public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
                                             this IServiceCollection services,
                                             Func<IEvDbMessageMeta, bool> filter,
-                                            string queueName) 
+                                            string queueName)
     {
         services.AddHostedService(sp =>
         {
             ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
             IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
-            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage,TRequest>>>();
+            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage, TRequest>>>();
             var host = new SQSBridgedProcessor<TMessage, TRequest>(
                 logger,
                 bridge,

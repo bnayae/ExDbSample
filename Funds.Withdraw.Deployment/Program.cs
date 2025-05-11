@@ -1,7 +1,3 @@
-using Core.Abstractions;
-using EvDb.Core;
-using Funds.Abstractions;
-using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Microsoft.Extensions;
 using Vogen;
 [assembly: VogenDefaults(openApiSchemaCustomizations: OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]

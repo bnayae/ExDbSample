@@ -1,13 +1,7 @@
-﻿using Amazon.Auth.AccessControlPolicy;
-using Amazon.Runtime;
-using Amazon.SimpleNotificationService;
-using Amazon.SimpleNotificationService.Model;
-using Amazon.SQS;
+﻿using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using System.Net;
-using System.Text.Json;
 
 namespace Microsoft.Extensions;
 
@@ -23,7 +17,7 @@ internal static class Extensions
     {
         using var changeStream = await collection.WatchAsync(cancellationToken: cancellationToken);
 
-        while ( !cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync(cancellationToken))
+        while (!cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync(cancellationToken))
         {
             foreach (var change in changeStream.Current)
             {
@@ -37,7 +31,7 @@ internal static class Extensions
 
     #region OuboxTo
 
-    public static async Task ListenToOutbox(this StreamSinkSetting setting ,CancellationToken cancellationToken)
+    public static async Task ListenToOutbox(this StreamSinkSetting setting, CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string streamName, string queueName) = setting;
 
@@ -58,7 +52,7 @@ internal static class Extensions
         await snsClient.AllowSNSToSendToSQSAsync(topicArn, queueArn);
 
         using var mongoClient = new MongoClient(MONGODB_ENDPOINT);
-        var database = mongoClient.GetDatabase(dbName);                 
+        var database = mongoClient.GetDatabase(dbName);
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
         Console.WriteLine($"""
@@ -84,7 +78,7 @@ internal static class Extensions
 
     }
 
-    public static async Task ListenToOutbox  (this QueueSinkSetting setting, CancellationToken cancellationToken)
+    public static async Task ListenToOutbox(this QueueSinkSetting setting, CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string queueName) = setting;
 
@@ -94,7 +88,7 @@ internal static class Extensions
         string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);
 
         using var mongoClient = new MongoClient(MONGODB_ENDPOINT);
-        var database = mongoClient.GetDatabase(dbName);                 
+        var database = mongoClient.GetDatabase(dbName);
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
         Console.ForegroundColor = ConsoleColor.Cyan;

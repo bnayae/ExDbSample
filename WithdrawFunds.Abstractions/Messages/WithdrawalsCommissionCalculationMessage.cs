@@ -1,9 +1,5 @@
-﻿using Funds.Abstractions;
-using EvDb.Core;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EvDb.Core;
+using Funds.Abstractions;
 
 namespace Funds.Withdraw.WithdrawFunds;
 

@@ -1,6 +1,5 @@
 ﻿using Funds.Abstractions;
 using System.Collections.Immutable;
-using Funds.Withdraw.WithdrawFunds;
 
 namespace Funds.Withdraw.WithdrawFunds;
 

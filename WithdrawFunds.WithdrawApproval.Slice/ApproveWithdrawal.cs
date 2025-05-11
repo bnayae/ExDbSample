@@ -1,21 +1,16 @@
 ﻿using Core.Abstractions;
 using Funds.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Funds.Withdraw.WithdrawFunds;
 
-internal class WithdrawalApproval: ICommandHandler<WithdrawalApprovalRequest>
+internal class WithdrawalApproval : ICommandHandler<WithdrawalApprovalRequest>
 {
     private readonly ILogger<WithdrawalApproval> _logger;
     private readonly IEvDbWithdrawFundsRequestFactory _evDbFactory;
 
     public WithdrawalApproval(ILogger<WithdrawalApproval> logger,
                               IEvDbWithdrawFundsRequestFactory evDbFactory)
-	{
+    {
         _logger = logger;
         _evDbFactory = evDbFactory;
     }
@@ -44,7 +39,7 @@ internal class WithdrawalApproval: ICommandHandler<WithdrawalApprovalRequest>
             _logger.WithdrawalDenied(accountId);
         }
 
-        await stream.StoreAsync(cancellationToken);        
+        await stream.StoreAsync(cancellationToken);
     }
 }
 

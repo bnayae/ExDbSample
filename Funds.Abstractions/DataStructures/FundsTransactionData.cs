@@ -1,6 +1,4 @@
-﻿using System.Collections.Immutable;
-
-namespace Funds.Abstractions;
+﻿namespace Funds.Abstractions;
 
 /// <summary>
 /// The common data of a transaction

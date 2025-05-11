@@ -1,13 +1,10 @@
+using Core.Abstractions;
 using Funds.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Routing;
-
-using Vogen;
+using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Funds.Withdraw.RequestWithdrawFundsViaATM;
-using Core.Abstractions;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Microsoft.Extensions;
 
@@ -24,8 +21,8 @@ public static class FetchFundsFromAtmApiExtensions
         var withdraw = app.MapGroup("withdraw")
          .WithTags("Withdraw");
 
-        withdraw.MapPost("ATM/{account}", 
-            async (AccountId account, 
+        withdraw.MapPost("ATM/{account}",
+            async (AccountId account,
             FundsTransactionData data,
             ICommandHandler<FetchFundsFromAtmRequest> slice) =>
         {
