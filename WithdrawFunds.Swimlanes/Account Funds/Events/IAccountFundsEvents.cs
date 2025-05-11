@@ -1,6 +1,6 @@
-﻿namespace Funds.Withdraw.WithdrawFunds;
+﻿//namespace Funds.Withdraw.WithdrawFunds;
 
-[EvDbAttachEventType<FundsWithdrawnFromAccountEvent>]
-public partial interface IAccountFundsEvents
-{
-}
+//[EvDbAttachEventType<FundsWithdrawnFromAccountEvent>]
+//public partial interface IAccountFundsEvents
+//{
+//}

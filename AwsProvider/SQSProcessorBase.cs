@@ -7,6 +7,7 @@ using EvDb.Core.Adapters;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Bson;
 #pragma warning disable S101 // Types should be named in PascalCase
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
 
 
 namespace Microsoft.Extensions;
@@ -58,7 +59,6 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
                     var rawMessage = parsed.RootElement.GetProperty("Message").ToString();
                     var doc = BsonDocument.Parse(rawMessage);
 
-
                     EvDbMessageRecord message = doc.ToMessageRecord();
                     IEvDbMessageMeta meta = message.GetMetadata();
 
@@ -66,6 +66,8 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
                     if (_filter?.Invoke(meta) ?? true)
                     {
                         T body = JsonSerializer.Deserialize<T>(message.Payload) ?? throw new JsonException($"failed to serialize `{typeof(T).Name}`");
+                        _logger.ProcessingOutboxMessage(meta.StreamCursor.ToString(), meta.EventType, meta.MessageType);
+
                         await _messageHandler(body, stoppingToken);
                     }
                 }
@@ -78,6 +80,5 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
                 await sqsClient.DeleteMessageAsync(queueUrl, msg.ReceiptHandle, stoppingToken);
             }
         }
-
     }
 }
