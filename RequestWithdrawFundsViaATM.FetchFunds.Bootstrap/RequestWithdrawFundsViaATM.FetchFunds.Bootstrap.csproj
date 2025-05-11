@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<RootNamespace>Funds.Withdraw.RequestWithdrawFundsViaATM</RootNamespace>
+		<RootNamespace>Microsoft.Extensions</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

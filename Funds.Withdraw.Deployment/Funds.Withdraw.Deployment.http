@@ -9,7 +9,6 @@ Content-Type: application/json
   "transactionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "transactionDate": "2025-04-29T09:47:27.787Z",
   "currency": "USD",
-  "flowContexts": [],
   "amount": 10
 }
 

@@ -1,3 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+	<ItemGroup>
+		<PackageReference Include="EvDb.Abstractions" Version="3.0.13" />
+	</ItemGroup>
+
 </Project>

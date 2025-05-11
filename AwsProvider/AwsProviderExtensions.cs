@@ -6,6 +6,7 @@ using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Core.Abstractions;
+using EvDb.Core;
 using Microsoft.Extensions.DependencyInjection;
 #pragma warning disable S101 // Types should be named in PascalCase
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
@@ -29,7 +30,6 @@ public static class AWSProviderExtensions
 
         if (string.IsNullOrEmpty(topicArn))
         {
-            Console.WriteLine($"SNS topic not found, creating {topicName}...");
             var createTopicResponse = await snsClient.CreateTopicAsync(topicName);
             topicArn = createTopicResponse.TopicArn;
             Console.WriteLine($"SNS topic: {topicArn} created");
@@ -208,6 +208,32 @@ public static class AWSProviderExtensions
             var host = new SQSDirectProcessor<T>(
                 logger,
                 commandEntry,
+                null,
+                queueName);
+            return host;
+        });
+        return services;
+    }
+
+    /// <summary>
+    /// Adds the SQS processor.
+    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// </summary>
+    /// <typeparam name="T">The type of both the SQS message and the command's request.</typeparam>
+    /// <param name="services">The services.</param>
+    /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="queueName">Name of the queue.</param>
+    /// <returns></returns>
+    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, Func<EvDbMessage, bool> filter, string queueName)
+    {
+        services.AddHostedService(sp =>
+        {
+            ICommandHandler<T> commandEntry = sp.GetRequiredService<ICommandHandler<T>>();
+            var logger = sp.GetRequiredService<ILogger<SQSDirectProcessor<T>>>();
+            var host = new SQSDirectProcessor<T>(
+                logger,
+                commandEntry,
+                filter,
                 queueName);
             return host;
         });
@@ -240,6 +266,38 @@ public static class AWSProviderExtensions
                 logger,
                 bridge,
                 commandEntry,
+                null,
+                queueName);
+            return host;
+        });
+        return services;
+    }
+
+    /// <summary>
+    /// Adds the SQS processor.
+    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// </summary>
+    /// <typeparam name="TMessage">The type of both the SQS message.</typeparam>
+    /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
+    /// <param name="services">The services.</param>
+    /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="queueName">Name of the queue.</param>
+    /// <returns></returns>
+    public static IServiceCollection AddBridgedSQSProcessor<TMessage,TRequest>(
+                                            this IServiceCollection services,
+                                            Func<EvDbMessage, bool> filter,
+                                            string queueName) 
+    {
+        services.AddHostedService(sp =>
+        {
+            ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
+            IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
+            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage,TRequest>>>();
+            var host = new SQSBridgedProcessor<TMessage, TRequest>(
+                logger,
+                bridge,
+                commandEntry,
+                filter,
                 queueName);
             return host;
         });

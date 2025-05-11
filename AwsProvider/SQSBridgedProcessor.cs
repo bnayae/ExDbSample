@@ -1,4 +1,5 @@
 ﻿using Core.Abstractions;
+using EvDb.Core;
 #pragma warning disable S101 // Types should be named in PascalCase
 
 
@@ -14,14 +15,15 @@ internal class SQSBridgedProcessor<TMessage, TRequest> : SQSProcessorBase<TMessa
     public SQSBridgedProcessor(ILogger<SQSBridgedProcessor<TMessage, TRequest>> logger,
                         IProcessorToCommandBridge<TMessage, TRequest> bridge,
                         ICommandHandler<TRequest> commandHandler,
+                        Func<EvDbMessage, bool>? filter,
                         string queueName) : 
-                            base(logger, (m,ct) => MessageBridging(bridge, commandHandler, m, ct), queueName)
+                            base(logger, (m,ct) => MessageBridging(bridge, commandHandler, m, ct), filter, queueName)
     {
     }
 
-    private static async Task MessageBridging(IProcessorToCommandBridge<TMessage,
-                                             TRequest> bridge, 
-                                             ICommandHandler<TRequest> commandHandler,TMessage message,
+    private static async Task MessageBridging(IProcessorToCommandBridge<TMessage, TRequest> bridge, 
+                                             ICommandHandler<TRequest> commandHandler,
+                                             TMessage message,
                                              CancellationToken cancellationToken)
     {
         var request = await bridge.BridgeAsync(message, cancellationToken);

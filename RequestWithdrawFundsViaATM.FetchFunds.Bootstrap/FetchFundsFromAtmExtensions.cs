@@ -13,7 +13,13 @@ namespace Microsoft.Extensions;
 
 public static class FetchFundsFromAtmApiExtensions
 {
-    public static IEndpointRouteBuilder AddRequestWithdrawFundsViaATM(this IEndpointRouteBuilder app)
+    public static IServiceCollection AddRequestWithdrawFundsViaATM(this IServiceCollection services)
+    {
+        services.TryAddFetchFundsSlice();
+        return services;
+    }
+
+    public static IEndpointRouteBuilder UseRequestWithdrawFundsViaATM(this IEndpointRouteBuilder app)
     {
         var withdraw = app.MapGroup("withdraw")
          .WithTags("Withdraw");

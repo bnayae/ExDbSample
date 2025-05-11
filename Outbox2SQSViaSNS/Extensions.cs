@@ -61,6 +61,13 @@ internal static class Extensions
         var database = mongoClient.GetDatabase(dbName);                 
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
+        Console.WriteLine($"""
+            Attaching DB:{dbName} on 
+                      Collection:{collectionName} to 
+                      SQS:{queueName} via 
+                      SNS:{streamName}
+            """);
+            
         await collection.StartListenToChangeStreamAsync(async change =>
         {
             var request = new PublishRequest
@@ -70,6 +77,7 @@ internal static class Extensions
             };
             await snsClient.PublishAsync(request);
         }, cancellationToken);
+
     }
 
     public static async Task ListenToOutbox  (this QueueSinkSetting setting, CancellationToken cancellationToken)
@@ -85,6 +93,9 @@ internal static class Extensions
         var database = mongoClient.GetDatabase(dbName);                 
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine($"Attaching DB:{dbName} on Collection:{collectionName} to SQS:{queueName}");
+        Console.ResetColor();
         await collection.StartListenToChangeStreamAsync(async change =>
         {
             var request = new SendMessageRequest
@@ -94,6 +105,7 @@ internal static class Extensions
             };
             await sqsClient.SendMessageAsync(request);
         }, cancellationToken);
+
     }
 
     #endregion //  OuboxTo

@@ -2,6 +2,8 @@
 using Amazon.SQS.Model;
 using AwsProvider;
 using Microsoft.Extensions.Hosting;
+using EvDb.Core;
+using Core.Abstractions;
 #pragma warning disable S101 // Types should be named in PascalCase
 
 
@@ -16,14 +18,17 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
 {
     private readonly ILogger _logger;
     private readonly Func<T, CancellationToken, Task> _messageHandler;
+    private readonly Func<EvDbMessage, bool>? _filter;
     private readonly string _queueName;
 
     protected SQSProcessorBase(ILogger logger,
                         Func<T, CancellationToken, Task> messageHandler,
+                        Func<EvDbMessage, bool>? filter,
                         string queueName)
     {
         _logger = logger;
         _messageHandler = messageHandler;
+        _filter = filter;
         _queueName = queueName;
     }
 
@@ -47,8 +52,14 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
                 try
                 {
                     var bodyJson = msg.Body;
-                    T message = JsonSerializer.Deserialize<T>(bodyJson) ?? throw new JsonException("Fail to deserialize message");
-                    await _messageHandler(message, stoppingToken);
+                    EvDbMessage message = JsonSerializer.Deserialize<EvDbMessage>(bodyJson);
+
+                    // TODO: Filter Metrics (include vs. exclude)
+                    if (_filter?.Invoke(message) ?? true)
+                    {
+                        T body = ((IEvDbEventConverter)message).GetData<T>();
+                        await _messageHandler(body, stoppingToken);
+                    }
                 }
                 catch (Exception ex)
                 {

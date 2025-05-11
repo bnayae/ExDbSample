@@ -1,4 +1,4 @@
-name: localstack
+name: evdb-sample-localstack
 services:
   localstack:
     image: localstack/localstack:latest
@@ -14,7 +14,15 @@ services:
       - AWS_DEFAULT_REGION=us-east-1
     volumes:
       - ./init-aws.sh:/etc/localstack/init/ready.d/init-aws.sh
-      - ./localstack:/var/lib/localstack
       - /var/run/docker.sock:/var/run/docker.sock
+      - localstack_data:/var/lib/localstack
+    healthcheck:
+      test: awslocal sns list-topics
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
     restart: unless-stopped
-
+    
+volumes:
+  localstack_data:

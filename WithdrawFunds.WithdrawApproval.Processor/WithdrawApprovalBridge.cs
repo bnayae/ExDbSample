@@ -1,4 +1,6 @@
-﻿using Core.Abstractions;
+﻿// Ignore Spelling: evdb
+
+using Core.Abstractions;
 using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Funds.Withdraw.WithdrawFunds;
 using Microsoft.Extensions.Logging;

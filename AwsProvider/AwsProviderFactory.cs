@@ -9,7 +9,7 @@ public static class AWSProviderFactory
 {
     private readonly static BasicAWSCredentials CREDENTIALS = new BasicAWSCredentials("test", "test");
     private const string AWS_ENDPOINT = "http://localhost:4566";
-    private const string REGION = "us-east-1";
+    //private const string REGION = "us-east-1";
 
     #region CreateSNSClient
 
@@ -18,7 +18,8 @@ public static class AWSProviderFactory
         var config = new AmazonSimpleNotificationServiceConfig
         {
             ServiceURL = AWS_ENDPOINT,
-            AuthenticationRegion = REGION
+            //AuthenticationRegion = REGION
+            UseHttp = true
         };
         return new AmazonSimpleNotificationServiceClient(CREDENTIALS, config);
     }
@@ -32,7 +33,8 @@ public static class AWSProviderFactory
         var config = new AmazonSQSConfig
         {
             ServiceURL = AWS_ENDPOINT,
-            AuthenticationRegion = REGION
+            // AuthenticationRegion = REGION
+            UseHttp = true
         };
         return new AmazonSQSClient(CREDENTIALS, config);
     }

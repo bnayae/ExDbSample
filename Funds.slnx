@@ -1,0 +1,52 @@
+<Solution>
+  <Folder Name="/docker/" />
+  <Folder Name="/docker/DBs/" Id="5ea0503e-c734-3d96-944f-e2bc27a5454f">
+    <File Path="docker/DBs/compose.yaml" />
+  </Folder>
+  <Folder Name="/docker/localstack/" Id="0288ff42-6afc-2a1b-9f51-d47311deb8fa">
+    <File Path="docker/localstack/docker-compose.yml" />
+  </Folder>
+  <Folder Name="/Infra/">
+    <Project Path="AwsProvider/AwsProvider.csproj" />
+    <Project Path="Core.Abstractions/Core.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Todo.md" />
+  </Folder>
+  <Folder Name="/Tools/">
+    <Project Path="Outbox2SQSViaSNS/Outbox2SQSViaSNS.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/">
+    <Project Path="Funds.Withdraw.Deployment/Funds.Withdraw.Deployment.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/" Id="e27a7af3-9afa-54d2-d16b-870ef128cbb5">
+    <Project Path="Funds.Abstractions/Funds.Abstractions.csproj" />
+    <Project Path="Funds.Withdraw.Abstractions/Funds.Withdraw.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/Request Withdraw Funds Via ATM/" Id="94ac6cb0-42f4-d2b8-b057-0795057afac0">
+    <Project Path="RequestWithdrawFundsViaATM.Abstractions/RequestWithdrawFundsViaATM.Abstractions.csproj" />
+    <Project Path="RequestWithdrawFundsViaATM.Swimlanes.Bootstrap/RequestWithdrawFundsViaATM.Swimlanes.Bootstrap.csproj" />
+    <Project Path="RequestWithdrawFundsViaATM.Swimlanes/RequestWithdrawFundsViaATM.Swimlanes.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/Request Withdraw Funds Via ATM/Slices/" Id="6ed1a13f-40de-e993-4f4a-8893627d5d3f">
+    <Project Path="RequestWithdrawFundsViaATM.FetchFunds.Bootstrap/RequestWithdrawFundsViaATM.FetchFunds.Bootstrap.csproj" />
+    <Project Path="RequestWithdrawFundsViaATM.FetchFunds.Slice/RequestWithdrawFundsViaATM.FetchFunds.Slice.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/Request Withdraw Funds Via Telller/" Id="6b226465-9f77-75f8-f1c7-1e2ffabe4a14" />
+  <Folder Name="/Withdraw Funds Context/Flows/Withdraw Funds/" Id="1b3b2341-9f19-9359-67c3-259f4ab9918e">
+    <Project Path="WithdrawFunds.Abstractions/WithdrawFunds.Abstractions.csproj" />
+    <Project Path="WithdrawFunds.Swimlanes.Bootstrap/WithdrawFunds.Swimlanes.Bootstrap.csproj" Id="260e2c9e-6622-4422-910c-765dd0bbbaef" />
+    <Project Path="WithdrawFunds.Swimlanes/WithdrawFunds.Swimlanes.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/Withdraw Funds/Slices/" Id="c7e22993-e7d8-d12b-acb2-78fc51d6fd69" />
+  <Folder Name="/Withdraw Funds Context/Flows/Withdraw Funds/Slices/Comission Calculation/" Id="c4aec365-15c8-8763-dff7-74c5fe403254">
+    <Project Path="WithdrawFunds.ComissionCalculation.Slice/WithdrawFunds.ComissionCalculation.Slice.csproj" />
+  </Folder>
+  <Folder Name="/Withdraw Funds Context/Flows/Withdraw Funds/Slices/Withdraw Approval/" Id="726bf218-564c-c8b4-8402-d3232186660c">
+    <Project Path="WithdrawFunds.WithdrawApproval.Bootstrap/WithdrawFunds.WithdrawApproval.Bootstrap.csproj" />
+    <Project Path="WithdrawFunds.WithdrawApproval.Processor/WithdrawFunds.WithdrawApproval.Processor.csproj" />
+    <Project Path="WithdrawFunds.WithdrawApproval.Slice/WithdrawFunds.WithdrawApproval.Slice.csproj" />
+  </Folder>
+</Solution>

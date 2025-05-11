@@ -4,7 +4,7 @@
 /// Produce outbox messages form ATM funds withdrawal.
 /// </summary>
 [EvDbAttachMessageType<FundsWithdrawalRequestedViaAtmMessage>]
-[EvDbOutbox<AtmFundsWithdrawFactory>("ReactToWithdrawalRequestedViaATM")]
+[EvDbOutbox<AtmFundsWithdrawFactory>]
 internal sealed partial class AtmFundsOutbox
 {
     protected override void ProduceOutboxMessages(FundsFetchRequestedFromAtmEvent payload,

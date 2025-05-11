@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	
+	<PropertyGroup>
+		<RootNamespace>Microsoft.Extensions</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="EvDb.Adapters.Store.EvDbMongoDB" Version="[3.0.12,)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Swimlanes\RequestWithdrawFundsViaATM.Swimlanes.csproj" />
+	</ItemGroup>
+
+</Project>

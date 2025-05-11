@@ -20,8 +20,9 @@ internal class WithdrawalApproval: ICommandHandler<WithdrawalApprovalRequest>
         _evDbFactory = evDbFactory;
     }
 
-    async Task ICommandHandler<WithdrawalApprovalRequest>.ProcessAsync(WithdrawalApprovalRequest request,
-                                               CancellationToken cancellationToken)
+    async Task ICommandHandler<WithdrawalApprovalRequest>.ProcessAsync(
+                                                WithdrawalApprovalRequest request,
+                                                CancellationToken cancellationToken)
     {
         (AccountId accountId, FundsTransactionData data, FundsInitiateMethod initiateMethod, double balance) = request;
 

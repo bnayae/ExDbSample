@@ -1,4 +1,5 @@
 ﻿using Core.Abstractions;
+using EvDb.Core;
 #pragma warning disable S101 // Types should be named in PascalCase
 
 namespace Microsoft.Extensions;
@@ -11,7 +12,8 @@ internal class SQSDirectProcessor<T> : SQSProcessorBase<T>
 {
     public SQSDirectProcessor(ILogger<SQSDirectProcessor<T>> logger,
                         ICommandHandler<T> commandHandler,
-                        string queueName) : base(logger, commandHandler.ProcessAsync, queueName)
+                        Func<EvDbMessage, bool>? filter,
+                        string queueName) : base(logger, commandHandler.ProcessAsync, filter, queueName)
     {
     }
 }

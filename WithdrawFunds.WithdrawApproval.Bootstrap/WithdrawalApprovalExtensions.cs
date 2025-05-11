@@ -6,8 +6,6 @@ namespace Microsoft.Extensions;
 
 public static class FetchFundsExtensions
 {
-    // TODO: Get Lookups
-
     public static IServiceCollection AddWithdrawalApprovalConsumer(this IServiceCollection services)
     {
         services.TryAddWithdrawalApprovalSlice();
