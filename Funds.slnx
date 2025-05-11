@@ -8,13 +8,13 @@
   </Folder>
   <Folder Name="/Flows/" Id="e27a7af3-9afa-54d2-d16b-870ef128cbb5">
     <Project Path="Funds.Abstractions/Funds.Abstractions.csproj" />
-    <Project Path="Funds.Withdraw.Abstractions/Funds.Withdraw.Abstractions.csproj" />
   </Folder>
-  <Folder Name="/Flows/Request Withdraw Funds Via ATM/" Id="94ac6cb0-42f4-d2b8-b057-0795057afac0">
-    <Project Path="RequestWithdrawFundsViaATM.Abstractions/RequestWithdrawFundsViaATM.Abstractions.csproj" />
-  </Folder>
+  <Folder Name="/Flows/Request Withdraw Funds Via ATM/" Id="94ac6cb0-42f4-d2b8-b057-0795057afac0" />
   <Folder Name="/Flows/Request Withdraw Funds Via ATM/Events/" Id="f1964fa5-448f-481d-843b-dc41ba00f328">
     <Project Path="RequestWithdrawFundsViaATM.Events/RequestWithdrawFundsViaATM.Events.csproj" Id="3498891e-c283-4bbf-a4af-c0d7deeaa8fe" />
+  </Folder>
+  <Folder Name="/Flows/Request Withdraw Funds Via ATM/Messages/" Id="d0bb1967-9bf3-41f2-b594-ec2f212cdc4c">
+    <Project Path="RequestWithdrawFundsViaATM.Messages/RequestWithdrawFundsViaATM.Messages.csproj" Id="d9fae1d7-1677-f31e-1351-5f82f9996a77" />
   </Folder>
   <Folder Name="/Flows/Request Withdraw Funds Via ATM/Slices/" Id="6ed1a13f-40de-e993-4f4a-8893627d5d3f">
     <Project Path="RequestWithdrawFundsViaATM.FetchFunds.Bootstrap/RequestWithdrawFundsViaATM.FetchFunds.Bootstrap.csproj" />
@@ -31,6 +31,9 @@
   <Folder Name="/Flows/Withdraw Funds/Events/" Id="bf074629-4411-42d2-9183-68d1e97626b2">
     <Project Path="WithdrawFunds.Events/WithdrawFunds.Events.csproj" Id="62d2a105-cd60-43ac-9cd7-f922e01b1f5c" />
     <Project Path="WithdrawFundsRequest.Events/WithdrawFundsRequest.Events.csproj" Id="811230b4-8f49-4031-96e6-93d91775e545" />
+  </Folder>
+  <Folder Name="/Flows/Withdraw Funds/Messages/" Id="91fda6e6-5293-4f0a-ad44-cbcd0cb564fb">
+    <Project Path="WithdrawFunds.Messages/WithdrawFunds.Messages.csproj" />
   </Folder>
   <Folder Name="/Flows/Withdraw Funds/Read Models/" Id="4897fc84-5c97-4763-a42c-0e6d171e6964">
     <Project Path="WithdrawFunds.ReadModels.AccountBalance/WithdrawFunds.ReadModels.AccountBalance.csproj" Id="e191e0ea-f163-4014-a506-68ce7b52d577" />

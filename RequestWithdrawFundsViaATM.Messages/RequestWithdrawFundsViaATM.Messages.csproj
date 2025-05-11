@@ -5,7 +5,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Funds.Withdraw.Abstractions\Funds.Withdraw.Abstractions.csproj" />
+	  <ProjectReference Include="..\Funds.Abstractions\Funds.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

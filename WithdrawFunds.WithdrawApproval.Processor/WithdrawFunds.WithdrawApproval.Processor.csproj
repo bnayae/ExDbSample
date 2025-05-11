@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
+	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Messages\RequestWithdrawFundsViaATM.Messages.csproj" />
 	  <ProjectReference Include="..\WithdrawFunds.WithdrawApproval.Slice\WithdrawFunds.WithdrawApproval.Slice.csproj" />
   </ItemGroup>
 

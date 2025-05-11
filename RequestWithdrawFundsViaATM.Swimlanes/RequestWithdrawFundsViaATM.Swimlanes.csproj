@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Messages\RequestWithdrawFundsViaATM.Messages.csproj" />
 		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Events\RequestWithdrawFundsViaATM.Events.csproj" />
 	</ItemGroup>
 
