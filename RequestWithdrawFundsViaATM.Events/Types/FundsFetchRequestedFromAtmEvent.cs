@@ -1,4 +1,5 @@
-﻿
+﻿using Funds.Abstractions;
+
 namespace Funds.Withdraw.RequestWithdrawFundsViaATM;
 
 /// <summary>
