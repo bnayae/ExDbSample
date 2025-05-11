@@ -18,7 +18,7 @@ public static class RequestWithdrawFundsViaATMSwimlanesExtensions
                 .AddAtmFundsWithdrawFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
                                             new EvDbStorageContext(DATABASE,
                                                                         builder.Environment.EnvironmentName,
-                                                                        "AtmFundsWithdraw"))
+                                                                        "ATM.Funds"))
                 .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
 
         return builder;

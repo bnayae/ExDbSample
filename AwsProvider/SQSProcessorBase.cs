@@ -1,9 +1,11 @@
 ﻿using Amazon.SQS;
 using Amazon.SQS.Model;
 using AwsProvider;
-using Microsoft.Extensions.Hosting;
 using EvDb.Core;
-using Core.Abstractions;
+using EvDb.Core.Adapters;
+using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
+using EvDb.Adapters.Store.Internals;
 #pragma warning disable S101 // Types should be named in PascalCase
 
 
@@ -18,12 +20,12 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
 {
     private readonly ILogger _logger;
     private readonly Func<T, CancellationToken, Task> _messageHandler;
-    private readonly Func<EvDbMessage, bool>? _filter;
+    private readonly Func<IEvDbMessageMeta, bool>? _filter;
     private readonly string _queueName;
 
     protected SQSProcessorBase(ILogger logger,
                         Func<T, CancellationToken, Task> messageHandler,
-                        Func<EvDbMessage, bool>? filter,
+                        Func<IEvDbMessageMeta, bool>? filter,
                         string queueName)
     {
         _logger = logger;
@@ -51,13 +53,19 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
             {
                 try
                 {
-                    var bodyJson = msg.Body;
-                    EvDbMessage message = JsonSerializer.Deserialize<EvDbMessage>(bodyJson);
+                    string bodyJson = msg.Body;
+                    var parsed = JsonDocument.Parse(bodyJson);
+                    var rawMessage = parsed.RootElement.GetProperty("Message").ToString();
+                    var doc = BsonDocument.Parse(rawMessage);
+
+
+                    EvDbMessageRecord message = doc.ToMessageRecord();
+                    IEvDbMessageMeta meta = message.GetMetadata();
 
                     // TODO: Filter Metrics (include vs. exclude)
-                    if (_filter?.Invoke(message) ?? true)
+                    if (_filter?.Invoke(meta) ?? true)
                     {
-                        T body = ((IEvDbEventConverter)message).GetData<T>();
+                        T body = JsonSerializer.Deserialize<T>(message.Payload) ?? throw new JsonException($"failed to serialize `{typeof(T).Name}`");
                         await _messageHandler(body, stoppingToken);
                     }
                 }

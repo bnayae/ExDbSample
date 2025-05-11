@@ -23,7 +23,7 @@ public sealed class WithdrawApprovalBridge : IProcessorToCommandBridge<FundsWith
         var stream = await _evdbFactory.GetAsync(request.AccountId, cancellationToken);
         var currency = request.Data.Currency;
         var balance = stream.Views.AccountBalance;
-        var balanceOfCurrency = balance[currency];
+        var balanceOfCurrency = balance.GetValueOrDefault(currency);
         var withdrawalApprovalRequest = new WithdrawalApprovalRequest(request.AccountId,
                                                                       request.Data,
                                                                       request.InitiateMethod,

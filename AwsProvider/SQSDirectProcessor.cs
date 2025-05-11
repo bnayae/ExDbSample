@@ -12,7 +12,7 @@ internal class SQSDirectProcessor<T> : SQSProcessorBase<T>
 {
     public SQSDirectProcessor(ILogger<SQSDirectProcessor<T>> logger,
                         ICommandHandler<T> commandHandler,
-                        Func<EvDbMessage, bool>? filter,
+                        Func<IEvDbMessageMeta, bool>? filter,
                         string queueName) : base(logger, commandHandler.ProcessAsync, filter, queueName)
     {
     }

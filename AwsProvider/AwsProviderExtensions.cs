@@ -224,7 +224,7 @@ public static class AWSProviderExtensions
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
     /// <param name="queueName">Name of the queue.</param>
     /// <returns></returns>
-    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, Func<EvDbMessage, bool> filter, string queueName)
+    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, Func<IEvDbMessageMeta, bool> filter, string queueName)
     {
         services.AddHostedService(sp =>
         {
@@ -285,7 +285,7 @@ public static class AWSProviderExtensions
     /// <returns></returns>
     public static IServiceCollection AddBridgedSQSProcessor<TMessage,TRequest>(
                                             this IServiceCollection services,
-                                            Func<EvDbMessage, bool> filter,
+                                            Func<IEvDbMessageMeta, bool> filter,
                                             string queueName) 
     {
         services.AddHostedService(sp =>

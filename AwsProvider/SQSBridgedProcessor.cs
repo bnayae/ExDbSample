@@ -15,7 +15,7 @@ internal class SQSBridgedProcessor<TMessage, TRequest> : SQSProcessorBase<TMessa
     public SQSBridgedProcessor(ILogger<SQSBridgedProcessor<TMessage, TRequest>> logger,
                         IProcessorToCommandBridge<TMessage, TRequest> bridge,
                         ICommandHandler<TRequest> commandHandler,
-                        Func<EvDbMessage, bool>? filter,
+                        Func<IEvDbMessageMeta, bool>? filter,
                         string queueName) : 
                             base(logger, (m,ct) => MessageBridging(bridge, commandHandler, m, ct), filter, queueName)
     {

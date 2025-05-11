@@ -17,14 +17,14 @@ public static class WithdrawFundsSwimlanesExtensions
         .AddAccountFundsFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
                                     new EvDbStorageContext(DATABASE,
                                                                 builder.Environment.EnvironmentName,
-                                                                "AccountFunds"))
+                                                                "Account.Funds"))
         .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
 
         services.AddEvDb()
                 .AddWithdrawFundsRequestFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
                                             new EvDbStorageContext(DATABASE,
                                                                         builder.Environment.EnvironmentName,
-                                                                        "WithdrawFundsRequest"))
+                                                                        "Withdraw.Funds.Request"))
                 .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
 
         return builder;

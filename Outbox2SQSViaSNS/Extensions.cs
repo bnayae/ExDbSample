@@ -62,12 +62,16 @@ internal static class Extensions
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
         Console.WriteLine($"""
-            Attaching DB:{dbName} on 
-                      Collection:{collectionName} to 
+            Attaching 
+                  to:
+                      DB:{dbName}  
+                      Collection:{collectionName} 
+                  Into:
                       SQS:{queueName} via 
                       SNS:{streamName}
             """);
-            
+
+
         await collection.StartListenToChangeStreamAsync(async change =>
         {
             var request = new PublishRequest
@@ -106,6 +110,18 @@ internal static class Extensions
             await sqsClient.SendMessageAsync(request);
         }, cancellationToken);
 
+    }
+    public static async Task WriteDocumentToCollectionAsync(this IMongoCollection<BsonDocument> collection, BsonDocument document, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await collection.InsertOneAsync(document, cancellationToken: cancellationToken);
+            Console.WriteLine("Document successfully written to the collection.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while writing the document: {ex.Message}");
+        }
     }
 
     #endregion //  OuboxTo

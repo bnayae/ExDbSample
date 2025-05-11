@@ -3,7 +3,7 @@
 using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Microsoft.Extensions;
 using static Microsoft.Extensions.Extensions;
-const string DATABASE = "funds-withdraw";
+const string DATABASE = "funds_withdraw";
 
 using var cts = new CancellationTokenSource();
 var cancellationToken = cts.Token;
@@ -12,7 +12,7 @@ var cancellationToken = cts.Token;
 var reactToWithdrawalRequestedViaATM = new StreamSinkSetting
 {
     DbName = DATABASE,
-    CollectionName = "dev_AtmFundsWithdraw__outbox", 
+    CollectionName = "dev_ATM_Funds_outbox", 
     StreamName = "ReactToWithdrawalRequestedViaATM",
     QueueName = "WithdrawApprover",
 };
