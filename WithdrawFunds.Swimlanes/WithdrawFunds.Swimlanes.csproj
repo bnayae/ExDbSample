@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
 		<ProjectReference Include="..\WithdrawFunds.ReadModels.AccountBalance\WithdrawFunds.ReadModels.AccountBalance.csproj" />
+		<ProjectReference Include="..\WithdrawFunds.ReadModels.WithdrawalsInProcess\WithdrawFunds.ReadModels.WithdrawalsInProcess.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

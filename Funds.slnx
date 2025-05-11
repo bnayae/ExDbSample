@@ -13,6 +13,9 @@
   <Folder Name="/Flows/Request Withdraw Funds Via ATM/" Id="94ac6cb0-42f4-d2b8-b057-0795057afac0">
     <Project Path="RequestWithdrawFundsViaATM.Abstractions/RequestWithdrawFundsViaATM.Abstractions.csproj" />
   </Folder>
+  <Folder Name="/Flows/Request Withdraw Funds Via ATM/Events/" Id="f1964fa5-448f-481d-843b-dc41ba00f328">
+    <Project Path="RequestWithdrawFundsViaATM.Events/RequestWithdrawFundsViaATM.Events.csproj" Id="3498891e-c283-4bbf-a4af-c0d7deeaa8fe" />
+  </Folder>
   <Folder Name="/Flows/Request Withdraw Funds Via ATM/Slices/" Id="6ed1a13f-40de-e993-4f4a-8893627d5d3f">
     <Project Path="RequestWithdrawFundsViaATM.FetchFunds.Bootstrap/RequestWithdrawFundsViaATM.FetchFunds.Bootstrap.csproj" />
     <Project Path="RequestWithdrawFundsViaATM.FetchFunds.Slice/RequestWithdrawFundsViaATM.FetchFunds.Slice.csproj" />
@@ -24,6 +27,14 @@
   <Folder Name="/Flows/Request Withdraw Funds Via Telller/" Id="6b226465-9f77-75f8-f1c7-1e2ffabe4a14" />
   <Folder Name="/Flows/Withdraw Funds/" Id="1b3b2341-9f19-9359-67c3-259f4ab9918e">
     <Project Path="WithdrawFunds.Abstractions/WithdrawFunds.Abstractions.csproj" />
+  </Folder>
+  <Folder Name="/Flows/Withdraw Funds/Events/" Id="bf074629-4411-42d2-9183-68d1e97626b2">
+    <Project Path="WithdrawFunds.Events/WithdrawFunds.Events.csproj" Id="62d2a105-cd60-43ac-9cd7-f922e01b1f5c" />
+    <Project Path="WithdrawFundsRequest.Events/WithdrawFundsRequest.Events.csproj" Id="811230b4-8f49-4031-96e6-93d91775e545" />
+  </Folder>
+  <Folder Name="/Flows/Withdraw Funds/Read Models/" Id="4897fc84-5c97-4763-a42c-0e6d171e6964">
+    <Project Path="WithdrawFunds.ReadModels.AccountBalance/WithdrawFunds.ReadModels.AccountBalance.csproj" Id="e191e0ea-f163-4014-a506-68ce7b52d577" />
+    <Project Path="WithdrawFunds.ReadModels.WithdrawalsInProcess/WithdrawFunds.ReadModels.WithdrawalsInProcess.csproj" Id="ecda8317-aa4c-424f-8c6c-81a499b36edb" />
   </Folder>
   <Folder Name="/Flows/Withdraw Funds/Slices/" Id="c7e22993-e7d8-d12b-acb2-78fc51d6fd69" />
   <Folder Name="/Flows/Withdraw Funds/Slices/Comission Calculation/" Id="c4aec365-15c8-8763-dff7-74c5fe403254">
@@ -37,12 +48,6 @@
   <Folder Name="/Flows/Withdraw Funds/Swimlanes/" Id="02ea681e-c7d8-13c7-8484-4ac65e1b71e8">
     <Project Path="WithdrawFunds.Swimlanes.Bootstrap/WithdrawFunds.Swimlanes.Bootstrap.csproj" Id="260e2c9e-6622-4422-910c-765dd0bbbaef" />
     <Project Path="WithdrawFunds.Swimlanes/WithdrawFunds.Swimlanes.csproj" />
-  </Folder>
-  <Folder Name="/Flows/Withdraw Funds/Swimlanes/Events/" Id="bf074629-4411-42d2-9183-68d1e97626b2">
-    <Project Path="WithdrawFunds.Events/WithdrawFunds.Events.csproj" Id="62d2a105-cd60-43ac-9cd7-f922e01b1f5c" />
-  </Folder>
-  <Folder Name="/Flows/Withdraw Funds/Swimlanes/Views/" Id="4897fc84-5c97-4763-a42c-0e6d171e6964">
-    <Project Path="WithdrawFunds.ReadModels.AccountBalance/WithdrawFunds.ReadModels.AccountBalance.csproj" Id="e191e0ea-f163-4014-a506-68ce7b52d577" />
   </Folder>
   <Folder Name="/Infra/">
     <Project Path="AwsProvider/AwsProvider.csproj" />

@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+	
 	<PropertyGroup>
 		<RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,5 +1,4 @@
-﻿using EvDb.Core;
-using Funds.Abstractions;
+﻿using Funds.Abstractions;
 
 namespace Funds.Withdraw.WithdrawFunds;
 

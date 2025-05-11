@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
 	<PropertyGroup>
 		<RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
+		<PackageReference Include="EvDb.Core" Version="3.0.14" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\WithdrawFundsRequest.Events\WithdrawFundsRequest.Events.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

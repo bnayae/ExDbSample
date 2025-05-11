@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Abstractions.csproj" />
+		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Events\RequestWithdrawFundsViaATM.Events.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

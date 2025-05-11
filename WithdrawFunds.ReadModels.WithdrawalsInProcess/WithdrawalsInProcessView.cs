@@ -3,7 +3,7 @@
 namespace Funds.Withdraw.WithdrawFunds;
 
 [EvDbViewType<ImmutableArray<WithdrawalsInProcessItem>, IWithdrawFundsRequestEvents>("withdrawals-in-inprocess")]
-internal partial class WithdrawalsInProcessView
+public partial class WithdrawalsInProcessView
 {
     protected override ImmutableArray<WithdrawalsInProcessItem> DefaultState { get; } = ImmutableArray<WithdrawalsInProcessItem>.Empty;
 
