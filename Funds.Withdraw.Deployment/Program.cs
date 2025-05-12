@@ -16,6 +16,19 @@ services.AddSwaggerGen(o => o.SchemaFilter<VogenSchemaFilterInFunds_Withdraw_Dep
 
 #endregion //  Common Code
 
+#region services.ConfigureHttpClientDefaults(...)
+
+services.ConfigureHttpClientDefaults(b => 
+{
+    b.ConfigureHttpClient(http =>
+    {
+        // Set the base address and timeout for the HTTP client
+        http.BaseAddress = new Uri($"http://localhost:{WireMockBootstrap.PORT}");
+        http.Timeout = TimeSpan.FromSeconds(30);
+    });
+}); 
+
+#endregion //  services.ConfigureHttpClientDefaults(...)
 
 services.AddTypedClients();
 

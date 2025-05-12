@@ -1,10 +1,29 @@
 - [ ] Entity/Log Classification
 - [ ] Common Data Protection
 - [ ] Swagger alternatives
-- [ ] Update the Event modeling: 
-  - [ ] Flow context
+- [ ] Start listening to change-stream: read time-stamp from file
+- [ ] Logic Context isolation: evdb + sns,sqs
+- [x] Update the Event modeling: 
+  - [x] Flow context
   - [ ] Initiate Method
 - [ ] EvDb Analyzer of:
   - [ ] In complete definitions that cause problems (outbox without messages, events without any event)
   - [ ] Duplicate events/messages names
   - [ ] Miss aligned setting like IEventsAdder (try to remove duplicate setting)
+- [ ] Tests 
+  - [ ] Unit Test: next to the projects
+  - [ ] Component Test: TBD: encapsulation of Bootstrap, Process, Slice, Read Model 
+  - [ ] Integration Test: next to the deployment
+- [ ] EvDb 
+  - [ ] Analyzer of:
+    - [ ] Missmatch cyclic relations (Outbox, Factory) of (View Events vs. Factory Events)
+    - [ ] Duplicate events/messages names
+  - [ ] Features
+    - [ ] In-Memory Store (for testing)
+    - [ ] TBD: eventual consistent patterns:
+      - [ ] Write to the DB with atomic aggregation: should define the query from the outbox TBD is infra needed and if so what king.
+      - [ ] Based on previous state: 
+        - [ ] fetch current state on start
+        - [ ] get message stream and save it after folding
+        - [ ] on OCC re-fetch the state  
+        - [ ] TBD: the metadata (can be generic class, i.e. let the user the freedom to decide)

@@ -7,6 +7,7 @@
     <File Path="docker/localstack/docker-compose.yml" />
   </Folder>
   <Folder Name="/Flows/" Id="e27a7af3-9afa-54d2-d16b-870ef128cbb5">
+    <Project Path="Funds.Abstractions.UnitTests/Funds.Abstractions.UnitTests.csproj" Id="8ad74eef-e289-430d-a0fe-372fec527e1a" />
     <Project Path="Funds.Abstractions/Funds.Abstractions.csproj" />
   </Folder>
   <Folder Name="/Flows/Request Withdraw Funds Via ATM/" Id="94ac6cb0-42f4-d2b8-b057-0795057afac0" />
@@ -26,6 +27,7 @@
   </Folder>
   <Folder Name="/Flows/Request Withdraw Funds Via Telller/" Id="6b226465-9f77-75f8-f1c7-1e2ffabe4a14" />
   <Folder Name="/Flows/Withdraw Funds/" Id="1b3b2341-9f19-9359-67c3-259f4ab9918e">
+    <Project Path="WithdrawFunds.Abstractions.UnitTests/WithdrawFunds.Abstractions.UnitTests.csproj" Id="46fc0350-0831-40f4-9900-9282234ce4c2" />
     <Project Path="WithdrawFunds.Abstractions/WithdrawFunds.Abstractions.csproj" />
   </Folder>
   <Folder Name="/Flows/Withdraw Funds/Events/" Id="bf074629-4411-42d2-9183-68d1e97626b2">

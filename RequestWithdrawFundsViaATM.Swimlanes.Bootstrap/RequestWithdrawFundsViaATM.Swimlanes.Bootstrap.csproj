@@ -9,7 +9,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="EvDb.Adapters.Store.EvDbMongoDB" Version="3.0.14" />
+		<PackageReference Include="EvDb.Adapters.Store.EvDbMongoDB" Version="3.0.15" />
 	</ItemGroup>
 
 	<ItemGroup>

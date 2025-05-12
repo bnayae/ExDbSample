@@ -15,65 +15,84 @@ namespace Microsoft.Extensions;
 
 public static class AWSProviderExtensions
 {
-    #region GetOrCreateTopicAsync
+    public static readonly SemaphoreSlim _streamLock = new(1, 1);
+    public static readonly SemaphoreSlim _queueLock = new(1, 1);
 
-    public static async Task<string> GetOrCreateTopicAsync(this AmazonSimpleNotificationServiceClient snsClient, string topicName)
+    #region GetOrCreateStreamAsync
+
+    public static async Task<string> GetOrCreateStreamAsync(this AmazonSimpleNotificationServiceClient snsClient, string topicName)
     {
-        var listTopicsResponse = await snsClient.ListTopicsAsync();
-        string? topicArn = listTopicsResponse.Topics switch
+        await _streamLock.WaitAsync(6000);
+        try
         {
-            null => null,
-            { Count: > 0 } => listTopicsResponse.Topics[0].TopicArn,
-            _ => null
-        };
+            var listTopicsResponse = await snsClient.ListTopicsAsync();
+            string? topicArn = listTopicsResponse.Topics switch
+            {
+                null => null,
+                { Count: > 0 } => listTopicsResponse.Topics[0].TopicArn,
+                _ => null
+            };
 
 
-        if (string.IsNullOrEmpty(topicArn))
-        {
-            var createTopicResponse = await snsClient.CreateTopicAsync(topicName);
-            topicArn = createTopicResponse.TopicArn;
-            Console.WriteLine($"SNS topic: {topicArn} created");
+            if (string.IsNullOrEmpty(topicArn))
+            {
+                var createTopicResponse = await snsClient.CreateTopicAsync(topicName);
+                topicArn = createTopicResponse.TopicArn;
+                Console.WriteLine($"SNS topic: {topicArn} created");
+            }
+            else
+            {
+                Console.WriteLine($"Using existing SNS topic: {topicArn}");
+            }
+
+            return topicArn;
         }
-        else
+        finally
         {
-            Console.WriteLine($"Using existing SNS topic: {topicArn}");
+            _streamLock.Release();
         }
-
-        return topicArn;
     }
 
-    #endregion //  GetOrCreateTopicAsync
+    #endregion //  GetOrCreateStreamAsync
 
     #region GetOrCreateQueueUrlAsync
 
     public static async Task<string> GetOrCreateQueueUrlAsync(this AmazonSQSClient sqsClient, string queueName)
     {
-        var listQueuesResponse = await sqsClient.ListQueuesAsync(new ListQueuesRequest
+        await _queueLock.WaitAsync(6000);
+        try
         {
-            QueueNamePrefix = queueName
-        });
+            var listQueuesResponse = await sqsClient.ListQueuesAsync(new ListQueuesRequest
+            {
+                QueueNamePrefix = queueName
+            });
 
-        string queueUrl;
-        string? existingQueueUrl = null;
-        if (listQueuesResponse.QueueUrls is not null)
-        {
-            existingQueueUrl = listQueuesResponse.QueueUrls
-                                                    .FirstOrDefault(url => url.EndsWith($"/{queueName}",
-                                                                         StringComparison.OrdinalIgnoreCase));
-        }
+            string queueUrl;
+            string? existingQueueUrl = null;
+            if (listQueuesResponse.QueueUrls is not null)
+            {
+                existingQueueUrl = listQueuesResponse.QueueUrls
+                                                        .FirstOrDefault(url => url.EndsWith($"/{queueName}",
+                                                                             StringComparison.OrdinalIgnoreCase));
+            }
 
-        if (existingQueueUrl is not null)
-        {
-            queueUrl = existingQueueUrl;
-            Console.WriteLine($"Found existing SQS queue: {queueUrl}");
+            if (existingQueueUrl is not null)
+            {
+                queueUrl = existingQueueUrl;
+                Console.WriteLine($"Found existing SQS queue: {queueUrl}");
+            }
+            else
+            {
+                var createQueueResponse = await sqsClient.CreateQueueAsync(queueName);
+                queueUrl = createQueueResponse.QueueUrl;
+                Console.WriteLine($"SQS queue: {queueUrl} created");
+            }
+            return queueUrl;
         }
-        else
+        finally
         {
-            var createQueueResponse = await sqsClient.CreateQueueAsync(queueName);
-            queueUrl = createQueueResponse.QueueUrl;
-            Console.WriteLine($"SQS queue: {queueUrl} created");
+            _queueLock.Release();
         }
-        return queueUrl;
     }
 
     #endregion //  GetOrCreateQueueUrlAsync

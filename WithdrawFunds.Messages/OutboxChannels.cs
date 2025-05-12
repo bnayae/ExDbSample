@@ -4,7 +4,7 @@
 
 namespace Funds.Withdraw.WithdrawFunds;
 
-internal abstract class OutboxChannels
+public abstract class WithdrawFundsChannels
 {
-    public const string Todo = "todo";
+    public const string Todo = "to-do";
 }

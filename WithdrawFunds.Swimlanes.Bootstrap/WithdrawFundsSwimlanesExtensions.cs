@@ -14,18 +14,18 @@ public static class WithdrawFundsSwimlanesExtensions
         IServiceCollection services = builder.Services;
 
         services.AddEvDb()
-        .AddAccountFundsFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
-                                    new EvDbStorageContext(DATABASE,
+        .AddAccountFundsFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGODbConnectionKey),
+                                    new EvDbStorageContext(DatabaseName,
                                                                 builder.Environment.EnvironmentName,
                                                                 "Account.Funds"))
-        .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
+        .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGODbConnectionKey));
 
         services.AddEvDb()
-                .AddWithdrawFundsRequestFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
-                                            new EvDbStorageContext(DATABASE,
+                .AddWithdrawFundsRequestFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGODbConnectionKey),
+                                            new EvDbStorageContext(DatabaseName,
                                                                         builder.Environment.EnvironmentName,
                                                                         "Withdraw.Funds.Request"))
-                .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
+                .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGODbConnectionKey));
 
         return builder;
     }

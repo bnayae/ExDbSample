@@ -61,7 +61,7 @@ internal static class Extensions
         using var sqsClient = AWSProviderFactory.CreateSQSClient();
 
         // Create SNS topic if it doesn't exist
-        string topicArn = await snsClient.GetOrCreateTopicAsync(streamName);
+        string topicArn = await snsClient.GetOrCreateStreamAsync(streamName);
 
 
         // Create SQS queue if it doesn't exist

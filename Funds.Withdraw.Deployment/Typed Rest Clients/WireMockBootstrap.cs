@@ -8,7 +8,7 @@ namespace Funds.Withdraw;
 
 public static class WireMockBootstrap
 {
-    private const int PORT = 8080;
+    public const int PORT = 8080;
 
     public static void StartWireMock(CancellationToken cancellationToken)
     {
@@ -16,7 +16,7 @@ public static class WireMockBootstrap
         WireMockServer server = WireMockServer.Start(PORT);
         server
             .Given(Request.Create()
-                          .WithPath(r => r.StartsWith("segments/", StringComparison.InvariantCultureIgnoreCase))
+                          .WithPath("/segments/*")
                           .UsingGet())
             .RespondWith(Response.Create()
                                  .WithStatusCode(200)
@@ -24,7 +24,7 @@ public static class WireMockBootstrap
                                  .WithBodyAsJson(ImmutableArray.Create(["ICP", "VIP"])));
         server
             .Given(Request.Create()
-                          .WithPath("commission-policy")
+                          .WithPath("/commission-policy")
                           .UsingPost())
             .RespondWith(Response.Create()
                                  .WithStatusCode(200)

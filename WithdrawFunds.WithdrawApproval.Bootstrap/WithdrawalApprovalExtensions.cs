@@ -1,4 +1,5 @@
 using EvDb.Core;
+using Funds.Abstractions;
 using Funds.Withdraw.RequestWithdrawFundsViaATM;
 using Funds.Withdraw.WithdrawFunds;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +14,9 @@ public static class FetchFundsExtensions
     {
         services.TryAddWithdrawalApprovalCommand();
         services.TryAddWithdrawApprovalProcessor();
-        services.AddBridgedSQSProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>(filter ?? (_ => true), "WithdrawApprover");
+        services.AddBridgedSQSProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>(
+                                                                                filter ?? (_ => true), 
+                                                                                FundsConstants.Queues.WithdrawApprover);
 
         return services;
     }

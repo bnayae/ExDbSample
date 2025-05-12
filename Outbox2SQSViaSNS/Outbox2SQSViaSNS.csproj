@@ -15,7 +15,9 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\AwsProvider\AwsProvider.csproj" />
+	  <ProjectReference Include="..\Funds.Abstractions\Funds.Abstractions.csproj" />
 	  <ProjectReference Include="..\RequestWithdrawFundsViaATM.Swimlanes\RequestWithdrawFundsViaATM.Swimlanes.csproj" />
+	  <ProjectReference Include="..\WithdrawFunds.Messages\WithdrawFunds.Messages.csproj" />
 	</ItemGroup>
 
 </Project>

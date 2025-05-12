@@ -14,11 +14,11 @@ public static class RequestWithdrawFundsViaATMSwimlanesExtensions
     {
         IServiceCollection services = builder.Services;
         services.AddEvDb()
-                .AddAtmFundsWithdrawFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGO_CONNECTION_KEY),
-                                            new EvDbStorageContext(DATABASE,
+                .AddAtmFundsWithdrawFactory(storage => storage.UseMongoDBStoreForEvDbStream(MONGODbConnectionKey),
+                                            new EvDbStorageContext(DatabaseName,
                                                                         builder.Environment.EnvironmentName,
                                                                         "ATM.Funds"))
-                .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGO_CONNECTION_KEY));
+                .DefaultSnapshotConfiguration(storage => storage.UseMongoDBForEvDbSnapshot(MONGODbConnectionKey));
 
         return builder;
     }

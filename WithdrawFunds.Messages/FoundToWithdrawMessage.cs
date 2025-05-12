@@ -9,7 +9,7 @@ namespace Funds.Withdraw.WithdrawFunds;
 /// <param name="Data"></param>
 /// <param name="InitiateMethod"></param>
 /// <param name="Commission"></param>
-[EvDbAttachChannel(OutboxChannels.Todo)]
+[EvDbAttachChannel(WithdrawFundsChannels.Todo)]
 [EvDbDefineMessagePayload("found-to-withdraw")]
 public readonly partial record struct FoundToWithdrawMessage(AccountId AccountId,
                                               FundsTransactionData Data,

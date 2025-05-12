@@ -1,4 +1,5 @@
 ﻿using EvDb.Core;
+using Funds.Abstractions;
 using Funds.Withdraw.WithdrawFunds;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,7 +13,9 @@ public static class CommissionCalculationExtensions
     {
         services.TryCommissionCalculationCommand();
         services.TryAddCommissionCalculationProcessor();
-        services.AddBridgedSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(filter ?? (_ => true), "CalculateWithdrawCommissionCommand");
+        services.AddBridgedSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(
+                                                                                        filter ?? (_ => true), 
+                                                                                        FundsConstants.Queues.CalculateWithdrawalsCommission);
 
         return services;
     }

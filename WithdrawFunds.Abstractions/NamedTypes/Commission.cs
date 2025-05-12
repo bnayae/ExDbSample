@@ -10,7 +10,7 @@ namespace Funds.Withdraw.WithdrawFunds;
     isInitializedMethodGeneration: IsInitializedMethodGeneration.Generate)]
 public readonly partial struct Commission
 {
-    private static Validation Validate(double input) => input > 1 || input < 0
+    private static Validation Validate(double input) => input <= 1 && input >= 0
                         ? Validation.Ok
                         : Validation.Invalid("Commissions range should be between 0-1");
 

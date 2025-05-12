@@ -13,6 +13,13 @@ namespace Funds.Abstractions;
     isInitializedMethodGeneration: IsInitializedMethodGeneration.Generate)]
 public readonly partial struct FundsInitiateMethod
 {
+    private static Validation Validate(string input) => input switch
+    { 
+        null => Validation.Invalid("Cannot be null"),
+        { Length: < 2 } => Validation.Invalid("Expecting at least 2 Letters"),
+        _ => Validation.Ok
+    };
+
     private static string NormalizeInput(string input) => input.Trim();
 
 }
