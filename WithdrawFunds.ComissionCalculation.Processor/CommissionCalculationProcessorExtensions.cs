@@ -8,7 +8,7 @@ public static class CommissionCalculationProcessorExtensions
 {
     public static IServiceCollection TryAddCommissionCalculationProcessor(this IServiceCollection services)
     {
-        services.TryAddSingleton<IProcessorToCommandBridge<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>, CommissionCalculationProcessor>();
+        services.TryAddSingleton<IProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>, CommissionCalculationProcessor>();
         return services;
     }
 

@@ -1,7 +1,7 @@
 ﻿namespace Funds.Withdraw.WithdrawFunds;
 
 [EvDbAttachMessageType<CalculateWithdrawalsCommissionMessage>]
-[EvDbAttachMessageType<FoundToWithdrawMessage>]
+[EvDbAttachMessageType<FundsToWithdrawMessage>]
 [EvDbOutbox<WithdrawFundsRequestFactory>]
 internal partial class WithdrawFundsRequestOutbox
 {
@@ -27,7 +27,7 @@ internal partial class WithdrawFundsRequestOutbox
 
     protected override void ProduceOutboxMessages(WithdrawCommissionCalculatedEvent payload, IEvDbEventMeta meta, EvDbWithdrawFundsRequestViews views, WithdrawFundsRequestOutboxContext outbox)
     {
-        var message = new FoundToWithdrawMessage
+        var message = new FundsToWithdrawMessage
         {
             AccountId = payload.AccountId,
             Data = payload.Data,

@@ -1,4 +1,5 @@
 name: evdb-sample-localstack
+
 services:
   localstack:
     image: localstack/localstack:latest
@@ -23,6 +24,20 @@ services:
       retries: 10
       start_period: 10s
     restart: unless-stopped
-    
+
+  guistack:
+    image: visualvincent/guistack:latest
+    container_name: guistack
+    ports:
+      - "5000:80"
+    environment:
+      - AWS_SNS_ENDPOINT_URL=http://localstack:4566
+      - AWS_SQS_ENDPOINT_URL=http://localstack:4566
+      - AWS_REGION=us-east-1
+    depends_on:
+      - localstack
+    restart: unless-stopped
+
+
 volumes:
   localstack_data:

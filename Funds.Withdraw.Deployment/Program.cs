@@ -1,7 +1,11 @@
+using EvDb.Core;
 using Funds.Withdraw;
 using Microsoft.Extensions;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Vogen;
+
 [assembly: VogenDefaults(openApiSchemaCustomizations: OpenApiSchemaCustomizations.GenerateSwashbuckleSchemaFilter)]
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -18,15 +22,16 @@ services.AddSwaggerGen(o => o.SchemaFilter<VogenSchemaFilterInFunds_Withdraw_Dep
 
 #region services.ConfigureHttpClientDefaults(...)
 
-services.ConfigureHttpClientDefaults(b => 
+services.ConfigureHttpClientDefaults(b =>
 {
     b.ConfigureHttpClient(http =>
     {
         // Set the base address and timeout for the HTTP client
         http.BaseAddress = new Uri($"http://localhost:{WireMockBootstrap.PORT}");
-        http.Timeout = TimeSpan.FromSeconds(30);
+        // http.Timeout = TimeSpan.FromSeconds(30);
+
     });
-}); 
+});
 
 #endregion //  services.ConfigureHttpClientDefaults(...)
 
@@ -38,6 +43,36 @@ services.AddRequestWithdrawFundsViaATM()
 
 builder.AddRequestWithdrawFundsViaATMSwimlanes()
         .AddWithdrawFundsSwimlanes();
+
+#region OTEL
+
+services.AddOpenTelemetry()
+    .WithTracing(tracerProviderBuilder =>
+    {
+        tracerProviderBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                                               .AddService("Funds.Withdraw"))
+            .AddEvDbInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddSource("YourActivitySourceName") // optional if you use ActivitySource
+            .AddAWSInstrumentation() // optional but useful for AWS-specific tracing
+            .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
+            .AddOtlpExporter();
+    })
+    .WithMetrics(meterProviderBuilder =>
+    {
+        meterProviderBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                                               .AddService("Funds.Withdraw"))
+            .AddEvDbInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddAWSInstrumentation()
+            .AddMeter("MongoDB.Driver.Core.Extensions.DiagnosticSources")
+            .AddOtlpExporter();
+    });
+
+#endregion //  OTEL
 
 WebApplication app = builder.Build();
 
@@ -62,4 +97,4 @@ WireMockBootstrap.StartWireMock(cts.Token);
 
 await app.RunAsync();
 
-await cts.CancelAsync();   
+await cts.CancelAsync();

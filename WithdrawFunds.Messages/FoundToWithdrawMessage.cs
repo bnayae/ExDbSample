@@ -10,8 +10,8 @@ namespace Funds.Withdraw.WithdrawFunds;
 /// <param name="InitiateMethod"></param>
 /// <param name="Commission"></param>
 [EvDbAttachChannel(WithdrawFundsChannels.Todo)]
-[EvDbDefineMessagePayload("found-to-withdraw")]
-public readonly partial record struct FoundToWithdrawMessage(AccountId AccountId,
+[EvDbDefineMessagePayload("funds-to-withdraw")]
+public readonly partial record struct FundsToWithdrawMessage(AccountId AccountId,
                                               FundsTransactionData Data,
                                               FundsInitiateMethod InitiateMethod,
                                               Commission Commission);

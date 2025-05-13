@@ -1,4 +1,5 @@
-﻿using Funds.Abstractions;
+﻿using Amazon.Runtime;
+using Funds.Abstractions;
 using Funds.Withdraw.WithdrawFunds;
 using System.Collections.Immutable;
 
@@ -8,8 +9,10 @@ public static class TypedClientsExtensions
 {
     public static void AddTypedClients(this IServiceCollection services)
     {
-        services.AddHttpClient<IFundsSegmentation, FundsSegmentationClient>();
-        services.AddHttpClient<IFundsCommissionPolicy, FundsCommissionPolicyClient>();
+        services.AddHttpClient<IFundsSegmentation, FundsSegmentationClient>()
+                                .SetHandlerLifetime(TimeSpan.FromMinutes(1));
+        services.AddHttpClient<IFundsCommissionPolicy, FundsCommissionPolicyClient>()
+                                .SetHandlerLifetime(TimeSpan.FromMinutes(1));
     }
 
     private sealed class FundsSegmentationClient(HttpClient _httpClient) : IFundsSegmentation

@@ -13,9 +13,12 @@ public static class CommissionCalculationExtensions
     {
         services.TryCommissionCalculationCommand();
         services.TryAddCommissionCalculationProcessor();
-        services.AddBridgedSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(
+        services.AddSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(
                                                                                         filter ?? (_ => true), 
-                                                                                        FundsConstants.Queues.CalculateWithdrawalsCommission);
+                                                                                        FundsConstants.Queues.CalculateWithdrawalsCommission,
+                                                                                        Debugger.IsAttached
+                                                                                            ? TimeSpan.FromMinutes(15)
+                                                                                            : TimeSpan.FromMinutes(2));
 
         return services;
     }

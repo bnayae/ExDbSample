@@ -23,6 +23,7 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
     private readonly Func<T, CancellationToken, Task> _messageHandler;
     private readonly Func<IEvDbMessageMeta, bool> _filter;
     private readonly string _queueName;
+    private readonly TimeSpan _visibilityTimeout;
 
     /// <summary>
     /// Base class for SQS processors hosting.
@@ -30,16 +31,19 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
     /// <param name="logger"></param>
     /// <param name="messageHandler"></param>
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
-    /// <param name="queueName"></param>
+    /// <param name="queueName">The queue name for consumption</param>
+    /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     protected SQSProcessorBase(ILogger logger,
                         Func<T, CancellationToken, Task> messageHandler,
                         Func<IEvDbMessageMeta, bool> filter,
-                        string queueName)
+                        string queueName,
+                        TimeSpan visibilityTimeout)
     {
         _logger = logger;
         _messageHandler = messageHandler;
         _filter = filter;
         _queueName = queueName;
+        _visibilityTimeout = visibilityTimeout;
     }
 
     /// <summary>
@@ -52,7 +56,7 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
     {
         using AmazonSQSClient sqsClient = AWSProviderFactory.CreateSQSClient();
 
-        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(_queueName);
+        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(_queueName, _visibilityTimeout);
 
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -60,13 +64,27 @@ internal abstract class SQSProcessorBase<T> : BackgroundService
             {
                 QueueUrl = queueUrl,
                 MaxNumberOfMessages = 1,
-                WaitTimeSeconds = 5
+                WaitTimeSeconds = 5,
             }, stoppingToken);
 
             foreach (var msg in received.Messages ?? [])
             {
                 try
                 {
+                    #region VisibilityTimeout (Debugger.IsAttached)
+
+                    if (Debugger.IsAttached)
+                    {
+                        await sqsClient.ChangeMessageVisibilityAsync(new ChangeMessageVisibilityRequest
+                        {
+                            QueueUrl = queueUrl,
+                            ReceiptHandle = msg.ReceiptHandle,
+                            VisibilityTimeout = (int)TimeSpan.FromMinutes(10).TotalSeconds
+                        }, stoppingToken);
+                    }
+
+                    #endregion //  VisibilityTimeout (Debugger.IsAttached)
+
                     string bodyJson = msg.Body;
                     var parsed = JsonDocument.Parse(bodyJson);
                     var rawMessage = parsed.RootElement.GetProperty("Message").ToString();

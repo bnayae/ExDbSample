@@ -11,7 +11,7 @@ public static class WithdrawApprovalProcessorExtensions
 {
     public static IServiceCollection TryAddWithdrawApprovalProcessor(this IServiceCollection services)
     {
-        services.TryAddSingleton<IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>, WithdrawApprovalProcessor>();
+        services.TryAddSingleton<IProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>, WithdrawApprovalProcessor>();
         return services;
     }
 }

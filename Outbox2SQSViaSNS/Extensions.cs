@@ -2,13 +2,22 @@
 using Amazon.SQS.Model;
 using EvDb.Adapters.Store.Internals;
 using EvDb.Core;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MongoDB.Driver.Core.Extensions.DiagnosticSources;
+using OpenTelemetry.Context.Propagation;
+using OpenTelemetry;
+#pragma warning disable CA1848 // Use the LoggerMessage delegates
+#pragma warning disable CA2254 // Template should be a static expression
+#pragma warning disable S2629 // Logging templates should be constant
 
 namespace Microsoft.Extensions;
 
 internal static class Extensions
 {
+    // private static readonly TextMapPropagator Propagator = Propagators.DefaultTextMapPropagator;
+
     private const string MONGODB_ENDPOINT = "mongodb://localhost:27017";
 
     #region StartListenToChangeStreamAsync
@@ -37,22 +46,31 @@ internal static class Extensions
     /// Listens to the outbox and sends messages to SQS.
     /// </summary>
     /// <param name="setting"></param>
+    /// <param name="logger"></param>
+    /// <param name="visibilityTimeout">Visibility timeout for the SQS message.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task ListenToOutbox(this StreamSinkSetting setting, CancellationToken cancellationToken)
+    public static async Task ListenToOutbox(this StreamSinkSetting setting,
+                                            ILogger logger,
+                                            TimeSpan visibilityTimeout,
+                                            CancellationToken cancellationToken)
     {
-        await setting.ListenToOutbox(_ => true, cancellationToken);
+        await setting.ListenToOutbox(logger, _ => true, visibilityTimeout, cancellationToken);
     }
 
     /// <summary>
     /// Listens to the outbox and sends messages to SQS based on a filter.
     /// </summary>
     /// <param name="setting"></param>
+    /// <param name="logger"></param>
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="visibilityTimeout">Visibility timeout for the SQS message.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static async Task ListenToOutbox(this StreamSinkSetting setting,
+                                            ILogger logger,
                                             Func<IEvDbMessageMeta, bool> filter,
+                                            TimeSpan visibilityTimeout,
                                             CancellationToken cancellationToken)
     {
         (string dbName, string collectionName, string streamName, string queueName) = setting;
@@ -65,7 +83,7 @@ internal static class Extensions
 
 
         // Create SQS queue if it doesn't exist
-        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);
+        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName, visibilityTimeout);
         string queueArn = await sqsClient.GetQueueARNAsync(queueUrl);
 
         // Allow SNS to send to SQS (Policy)
@@ -73,11 +91,16 @@ internal static class Extensions
         // Subscribe SQS to SNS topic
         await snsClient.AllowSNSToSendToSQSAsync(topicArn, queueArn);
 
-        using var mongoClient = new MongoClient(MONGODB_ENDPOINT);
+        var mongoClientSettings = MongoClientSettings.FromConnectionString(MONGODB_ENDPOINT);
+        mongoClientSettings.ClusterConfigurator = cb =>
+        {
+            cb.Subscribe(new DiagnosticsActivityEventSubscriber());
+        };
+        using var mongoClient = new MongoClient(mongoClientSettings);
         var database = mongoClient.GetDatabase(dbName);
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
-        Console.WriteLine($"""
+        logger.LogDebug($"""
             Attaching 
                   to:
                       DB:{dbName}  
@@ -96,7 +119,7 @@ internal static class Extensions
                 return;
             }
 
-            Console.WriteLine($"""
+            logger.LogDebug($"""
                 Sending message 
                       to:
                           DB:{dbName}  
@@ -106,11 +129,24 @@ internal static class Extensions
                           SNS:{streamName}
                 """);
 
+            //var parentContext = new ActivityContext(
+            //        ActivityTraceId.CreateFromString(meta.TraceId),
+            //        ActivitySpanId.CreateFromString(meta.SpanId),
+            //        ActivityTraceFlags.Recorded
+            //    );
+
+            //// Create a propagation context
+            //var propagationContext = new PropagationContext(
+            //    parentContext,
+            //    Baggage.Current
+            //);
+
             var request = new PublishRequest
             {
                 TopicArn = topicArn,
                 Message = change
             };
+
             await snsClient.PublishAsync(request);
         }, cancellationToken);
 
@@ -120,22 +156,31 @@ internal static class Extensions
     /// Listens to the outbox and sends messages to SQS.
     /// </summary>
     /// <param name="setting"></param>
+    /// <param name="logger"></param>
+    /// <param name="visibilityTimeout">Visibility timeout for the SQS message.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    public static async Task ListenToOutbox(this QueueSinkSetting setting, CancellationToken cancellationToken)
+    public static async Task ListenToOutbox(this QueueSinkSetting setting, 
+                                            ILogger logger,
+                                            TimeSpan visibilityTimeout,
+                                            CancellationToken cancellationToken)
     {
-        await setting.ListenToOutbox(_ => true, cancellationToken);
+        await setting.ListenToOutbox(logger, _ => true, visibilityTimeout, cancellationToken);
     }
 
     /// <summary>
     /// Listens to the outbox and sends messages to SQS based on a filter.
     /// </summary>
     /// <param name="setting"></param>
+    /// <param name="logger"></param>
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
+    /// <param name="visibilityTimeout">Visibility timeout for the SQS message.</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     public static async Task ListenToOutbox(this QueueSinkSetting setting,
+                                            ILogger logger,
                                             Func<IEvDbMessageMeta, bool> filter,
+                                            TimeSpan visibilityTimeout,
                                             CancellationToken cancellationToken)
     {
 
@@ -144,14 +189,21 @@ internal static class Extensions
         using var sqsClient = AWSProviderFactory.CreateSQSClient();
 
         // Create SQS queue if it doesn't exist
-        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName);
+        string queueUrl = await sqsClient.GetOrCreateQueueUrlAsync(queueName, visibilityTimeout);
 
-        using var mongoClient = new MongoClient(MONGODB_ENDPOINT);
+
+        var mongoClientSettings = MongoClientSettings.FromConnectionString(MONGODB_ENDPOINT);
+        mongoClientSettings.ClusterConfigurator = cb =>
+        {
+            cb.Subscribe(new DiagnosticsActivityEventSubscriber());
+        };
+        using var mongoClient = new MongoClient(mongoClientSettings);
+
         var database = mongoClient.GetDatabase(dbName);
         IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(collectionName);
 
         Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine($"Attaching DB:{dbName} on Collection:{collectionName} to SQS:{queueName}");
+        logger.LogDebug($"Attaching DB:{dbName} on Collection:{collectionName} to SQS:{queueName}");
         Console.ResetColor();
         await collection.StartListenToChangeStreamAsync(async change =>
         {
@@ -161,7 +213,7 @@ internal static class Extensions
                 return;
             }
 
-            Console.WriteLine($"""
+            logger.LogDebug($"""
                 Sending message 
                       to:
                           DB:{dbName}  

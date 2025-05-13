@@ -1,40 +1,67 @@
-﻿#pragma warning disable CA1303 // Do not pass literals as localized parameters
+﻿using EvDb.Core;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Outbox2SQSViaSNS;
 
-using Funds.Abstractions;
-using Microsoft.Extensions;
-using Funds.Withdraw.WithdrawFunds;
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-using static Microsoft.Extensions.Extensions;
+IServiceCollection services = builder.Services;
 
-const string DATABASE = "funds_withdraw";
+#region Common Code
 
-using var cts = new CancellationTokenSource();
-var cancellationToken = cts.Token;
+services.AddAuthentication();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
 
-// TODO: environment aware
+#endregion //  Common Code
 
-var reactToWithdrawalRequestedViaATM = new StreamSinkSetting
+#region OTEL
+
+services.AddOpenTelemetry()
+    .WithTracing(tracerProviderBuilder =>
+    {
+        tracerProviderBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                                               .AddService("Funds.Withdraw"))
+            .AddEvDbInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddSource("YourActivitySourceName") // optional if you use ActivitySource
+            .AddAWSInstrumentation() // optional but useful for AWS-specific tracing
+            .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
+            .AddOtlpExporter();
+    })
+    .WithMetrics(meterProviderBuilder =>
+    {
+        meterProviderBuilder
+            .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                                               .AddService("Funds.Withdraw"))
+            .AddEvDbInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddAWSInstrumentation()
+            .AddMeter("MongoDB.Driver.Core.Extensions.DiagnosticSources")
+            .AddOtlpExporter();
+    });
+
+#endregion //  OTEL
+
+services.AddHostedService<Job>();
+
+WebApplication app = builder.Build();
+
+#region Common Code
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    DbName = DATABASE,
-    CollectionName = "dev_ATM_Funds_outbox",
-    StreamName = "ReactToWithdrawalRequestedViaATM",
-    QueueName = FundsConstants.Queues.WithdrawApprover,
-};
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-var reactToCalculateWithdrawalsCommission = new StreamSinkSetting
-{
-    DbName = DATABASE,
-    CollectionName = "dev_Withdraw_Funds_Request_outbox",
-    QueueName = FundsConstants.Queues.CalculateWithdrawalsCommission,
-};
+app.UseHttpsRedirection();
 
-Console.WriteLine("Listening to Outbox");
+#endregion //  Common Code
 
-await Task.WhenAll(
-        reactToWithdrawalRequestedViaATM.ListenToOutbox(cancellationToken),
-        reactToCalculateWithdrawalsCommission.ListenToOutbox(meta =>
-                                                    meta.Channel == WithdrawFundsChannels.Todo && 
-                                                    meta.MessageType == CalculateWithdrawalsCommissionMessage.PAYLOAD_TYPE,
-                                                    cancellationToken));
 
-// CalculateWithdrawalsCommissionMessage
+await app.RunAsync();

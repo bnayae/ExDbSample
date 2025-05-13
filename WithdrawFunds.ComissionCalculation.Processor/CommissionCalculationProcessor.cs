@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 
 namespace Funds.Withdraw.WithdrawFunds;
 
-internal sealed class CommissionCalculationProcessor : IProcessorToCommandBridge<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>
+internal sealed class CommissionCalculationProcessor : IProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>
 {
     private readonly IFundsCommissionPolicy _commissionPolicy;
     private readonly IFundsSegmentation _segmentation;
@@ -16,8 +16,8 @@ internal sealed class CommissionCalculationProcessor : IProcessorToCommandBridge
         _segmentation = segmentation;
     }
 
-    async Task<CalculateWithdrawCommissionRequest> IProcessorToCommandBridge<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>
-                                .BridgeAsync(CalculateWithdrawalsCommissionMessage message, CancellationToken cancellationToken)
+    async Task<CalculateWithdrawCommissionRequest> IProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>
+                                .ProcessAsync(CalculateWithdrawalsCommissionMessage message, CancellationToken cancellationToken)
     {
         ImmutableArray<Segment> seggments = await _segmentation.GetSegmentsAsync(message.AccountId, cancellationToken);
         Commission commission = await _commissionPolicy.GetCommissionAsync(seggments, cancellationToken);

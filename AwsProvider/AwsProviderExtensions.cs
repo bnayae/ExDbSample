@@ -8,6 +8,7 @@ using Amazon.SQS.Model;
 using Core.Abstractions;
 using EvDb.Core;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 #pragma warning disable S101 // Types should be named in PascalCase
 #pragma warning disable CA1303 // Do not pass literals as localized parameters
 
@@ -15,8 +16,8 @@ namespace Microsoft.Extensions;
 
 public static class AWSProviderExtensions
 {
-    public static readonly SemaphoreSlim _streamLock = new(1, 1);
-    public static readonly SemaphoreSlim _queueLock = new(1, 1);
+    private static readonly SemaphoreSlim _streamLock = new(1, 1);
+    private static readonly SemaphoreSlim _queueLock = new(1, 1);
 
     #region GetOrCreateStreamAsync
 
@@ -57,7 +58,9 @@ public static class AWSProviderExtensions
 
     #region GetOrCreateQueueUrlAsync
 
-    public static async Task<string> GetOrCreateQueueUrlAsync(this AmazonSQSClient sqsClient, string queueName)
+    public static async Task<string> GetOrCreateQueueUrlAsync(this AmazonSQSClient sqsClient,
+                                                              string queueName,
+                                                              TimeSpan visibilityTimeout)
     {
         await _queueLock.WaitAsync(6000);
         try
@@ -84,7 +87,18 @@ public static class AWSProviderExtensions
             else
             {
                 var createQueueResponse = await sqsClient.CreateQueueAsync(queueName);
+
                 queueUrl = createQueueResponse.QueueUrl;
+                string visibilityValue =  ((int)visibilityTimeout.TotalSeconds).ToString(CultureInfo.InvariantCulture);
+                await sqsClient.SetQueueAttributesAsync(new SetQueueAttributesRequest
+                {
+                    QueueUrl = queueUrl,
+                    Attributes = new Dictionary<string, string>
+                                        {
+                                            { QueueAttributeName.VisibilityTimeout, visibilityValue}
+                                        }
+                });
+
                 Console.WriteLine($"SQS queue: {queueUrl} created");
             }
             return queueUrl;
@@ -207,8 +221,9 @@ public static class AWSProviderExtensions
 
     #endregion //  AllowSNSToSendToSQSAsync
 
-
     #region AddDirectSQSProcessor
+
+    #region Overloads
 
     /// <summary>
     /// Adds the SQS processor.
@@ -217,11 +232,14 @@ public static class AWSProviderExtensions
     /// <typeparam name="T">The type of both the SQS message and the command's request.</typeparam>
     /// <param name="services">The services.</param>
     /// <param name="queueName">Name of the queue.</param>
+    /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
-    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, string queueName)
+    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, string queueName, TimeSpan visibilityTimeout)
     {
-        return services.AddDirectSQSProcessor<T>(_ => true, queueName);
+        return services.AddSQSProcessor<T>(_ => true, queueName, visibilityTimeout);
     }
+
+    #endregion //  Overloads
 
     /// <summary>
     /// Adds the SQS processor.
@@ -231,28 +249,35 @@ public static class AWSProviderExtensions
     /// <param name="services">The services.</param>
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
     /// <param name="queueName">Name of the queue.</param>
+    /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
-    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, Func<IEvDbMessageMeta, bool> filter, string queueName)
+    public static IServiceCollection AddSQSProcessor<T>(this IServiceCollection services,
+                                                              Func<IEvDbMessageMeta, bool> filter,
+                                                              string queueName,
+                                                              TimeSpan visibilityTimeout)
     {
         services.AddHostedService(sp =>
         {
-            IProcessorToCommand<T>? processor = sp.GetService<IProcessorToCommand<T>>();
             ICommandHandler<T> commandEntry = sp.GetRequiredService<ICommandHandler<T>>();
-            var logger = sp.GetRequiredService<ILogger<SQSDirectProcessor<T>>>();
-            var host = new SQSDirectProcessor<T>(
+            IProcessor<T>? processor = sp.GetService<IProcessor<T>>();
+            var logger = sp.GetRequiredService<ILogger<SQSProcessor<T>>>();
+            var host = new SQSProcessor<T>(
                 logger,
                 processor,
                 commandEntry,
                 filter,
-                queueName);
+                queueName,
+                visibilityTimeout);
             return host;
         });
         return services;
     }
 
-    #endregion //  AddDirectSQSProcessor
+    #endregion //  AddSQSProcessor
 
-    #region AddBridgedSQSProcessor
+    #region AddSQSProcessor
+
+    #region Overloads
 
     /// <summary>
     /// Adds the SQS processor.
@@ -262,13 +287,17 @@ public static class AWSProviderExtensions
     /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
     /// <param name="services">The services.</param>
     /// <param name="queueName">Name of the queue.</param>
+    /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
     public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
                                             this IServiceCollection services,
-                                            string queueName)
+                                            string queueName,
+                                            TimeSpan visibilityTimeout)
     {
-        return services.AddBridgedSQSProcessor<TMessage, TRequest>(_ => true, queueName);
+        return services.AddSQSProcessor<TMessage, TRequest>(_ => true, queueName, visibilityTimeout);
     }
+
+    #endregion //  Overloads
 
     /// <summary>   
     /// Adds the SQS processor.
@@ -278,28 +307,31 @@ public static class AWSProviderExtensions
     /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
     /// <param name="services">The services.</param>
     /// <param name="filter">Filter function to determine if the message should be processed.</param>
-    /// <param name="queueName">Name of the queue.</param>
+    /// <param name="consumeFromQueueName">Name of the queue (consume from).</param>
+    /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
-    public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
+    public static IServiceCollection AddSQSProcessor<TMessage, TRequest>(
                                                 this IServiceCollection services,
                                                 Func<IEvDbMessageMeta, bool> filter,
-                                            string queueName)
+                                                string consumeFromQueueName,
+                                                TimeSpan visibilityTimeout)
     {
         services.AddHostedService(sp =>
         {
             ICommandHandler<TRequest> commandEntry = sp.GetRequiredService<ICommandHandler<TRequest>>();
-            IProcessorToCommandBridge<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessorToCommandBridge<TMessage, TRequest>>();
-            var logger = sp.GetRequiredService<ILogger<SQSBridgedProcessor<TMessage, TRequest>>>();
-            var host = new SQSBridgedProcessor<TMessage, TRequest>(
+            IProcessor<TMessage, TRequest> bridge = sp.GetRequiredService<IProcessor<TMessage, TRequest>>();
+            var logger = sp.GetRequiredService<ILogger<SQSProcessor<TMessage, TRequest>>>();
+            var host = new SQSProcessor<TMessage, TRequest>(
                 logger,
                 bridge,
                 commandEntry,
                 filter,
-                queueName);
+                consumeFromQueueName,
+                visibilityTimeout);
             return host;
         });
         return services;
     }
 
-    #endregion //  AddBridgedSQSProcessor
+    #endregion //  AddSQSProcessor
 }

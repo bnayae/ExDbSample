@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace WithdrawFunds.WithdrawApproval.Processor;
 
-internal sealed class WithdrawApprovalProcessor : IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
+internal sealed class WithdrawApprovalProcessor : IProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
 {
     private readonly IEvDbAccountFundsFactory _evdbFactory;
 
@@ -18,8 +18,8 @@ internal sealed class WithdrawApprovalProcessor : IProcessorToCommandBridge<Fund
         _evdbFactory = evdbFactory;
     }
 
-    async Task<WithdrawalApprovalRequest> IProcessorToCommandBridge<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
-                    .BridgeAsync(FundsWithdrawalRequestedViaAtmMessage request,
+    async Task<WithdrawalApprovalRequest> IProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
+                    .ProcessAsync(FundsWithdrawalRequestedViaAtmMessage request,
                                  CancellationToken cancellationToken)
     {
         var stream = await _evdbFactory.GetAsync(request.AccountId, cancellationToken);
