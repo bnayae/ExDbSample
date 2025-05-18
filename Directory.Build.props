@@ -30,12 +30,8 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<!--<IsPackable>true</IsPackable>-->
-		<PackageTags></PackageTags>
-	</PropertyGroup>
-
-	<PropertyGroup>
 		<IsPackable>true</IsPackable>
+		<PackageTags></PackageTags>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<IncludeSource>True</IncludeSource>

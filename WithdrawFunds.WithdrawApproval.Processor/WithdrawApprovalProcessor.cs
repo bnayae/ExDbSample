@@ -19,16 +19,16 @@ internal sealed class WithdrawApprovalProcessor : IProcessor<FundsWithdrawalRequ
     }
 
     async Task<WithdrawalApprovalRequest> IProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>
-                    .ProcessAsync(FundsWithdrawalRequestedViaAtmMessage request,
+                    .ProcessAsync(FundsWithdrawalRequestedViaAtmMessage message,
                                  CancellationToken cancellationToken)
     {
-        var stream = await _evdbFactory.GetAsync(request.AccountId, cancellationToken);
-        var currency = request.Data.Currency;
+        var stream = await _evdbFactory.GetAsync(message.AccountId, cancellationToken);
+        var currency = message.Data.Currency;
         var balance = stream.Views.AccountBalance;
         var balanceOfCurrency = balance.GetValueOrDefault(currency);
-        var withdrawalApprovalRequest = new WithdrawalApprovalRequest(request.AccountId,
-                                                                      request.Data,
-                                                                      request.InitiateMethod,
+        var withdrawalApprovalRequest = new WithdrawalApprovalRequest(message.AccountId,
+                                                                      message.Data,
+                                                                      message.InitiateMethod,
                                                                       balanceOfCurrency.Funds);
         return withdrawalApprovalRequest;
     }

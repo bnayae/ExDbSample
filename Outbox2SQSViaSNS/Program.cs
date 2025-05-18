@@ -25,11 +25,12 @@ services.AddOpenTelemetry()
             .SetResourceBuilder(ResourceBuilder.CreateDefault()
                                                .AddService("Funds.Withdraw"))
             .AddEvDbInstrumentation()
+            .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
-            .AddSource("YourActivitySourceName") // optional if you use ActivitySource
             .AddAWSInstrumentation() // optional but useful for AWS-specific tracing
             .AddSource("MongoDB.Driver.Core.Extensions.DiagnosticSources")
-            .AddOtlpExporter();
+            .AddOtlpExporter()
+            .AddOtlpExporter(m => m.Endpoint = new Uri("http://127.0.0.1:18889"));
     })
     .WithMetrics(meterProviderBuilder =>
     {
@@ -38,10 +39,12 @@ services.AddOpenTelemetry()
                                                .AddService("Funds.Withdraw"))
             .AddEvDbInstrumentation()
             .AddRuntimeInstrumentation()
+            .AddAspNetCoreInstrumentation()
             .AddHttpClientInstrumentation()
             .AddAWSInstrumentation()
             .AddMeter("MongoDB.Driver.Core.Extensions.DiagnosticSources")
-            .AddOtlpExporter();
+            .AddOtlpExporter()
+            .AddOtlpExporter(m => m.Endpoint = new Uri("http://127.0.0.1:18889"));
     });
 
 #endregion //  OTEL
