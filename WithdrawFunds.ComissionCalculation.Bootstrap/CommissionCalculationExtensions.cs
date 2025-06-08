@@ -13,7 +13,7 @@ public static class CommissionCalculationExtensions
     {
         services.TryCommissionCalculationCommand();
         services.TryAddCommissionCalculationProcessor();
-        services.AddSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(
+        services.AddBridgedSQSProcessor<CalculateWithdrawalsCommissionMessage, CalculateWithdrawCommissionRequest>(
                                                                                         filter ?? (_ => true), 
                                                                                         FundsConstants.Queues.CalculateWithdrawalsCommission,
                                                                                         Debugger.IsAttached

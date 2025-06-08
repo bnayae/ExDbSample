@@ -7,7 +7,7 @@
 /// Withdraw Funds Request factory.
 /// </summary>
 [EvDbAttachView<WithdrawalsInProcessView>]
-[EvDbStreamFactory<IWithdrawFundsRequestEvents, WithdrawFundsRequestOutbox>("Funds.Withdraw", "Withdraw.Funds.Request")]
+[EvDbStreamFactory<IWithdrawFundsRequestEvents, WithdrawFundsRequestOutbox>("Funds.Withdraw.Withdraw.Funds.Request")]
 public partial class WithdrawFundsRequestFactory
 {
 }

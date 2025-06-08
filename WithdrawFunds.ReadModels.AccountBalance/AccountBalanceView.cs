@@ -10,9 +10,9 @@ public partial class AccountBalanceView
 
     public override int MinEventsBetweenSnapshots { get; } = 10;
 
-    protected override ImmutableDictionary<Currency, AccountBalanceState> Fold(ImmutableDictionary<Currency, AccountBalanceState> state, FundsWithdrawnFromAccountEvent payload, IEvDbEventMeta meta)
-    {
-        return base.Fold(state, payload, meta);
-    }
 
+    protected override ImmutableDictionary<Currency, AccountBalanceState> Apply(ImmutableDictionary<Currency, AccountBalanceState> state, FundsWithdrawnFromAccountEvent payload, IEvDbEventMeta meta)
+    {
+        return base.Apply(state, payload, meta);
+    }
 }

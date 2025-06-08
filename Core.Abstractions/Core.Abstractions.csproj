@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
-		<PackageReference Include="EvDb.Abstractions" Version="3.0.16" />
+		<PackageReference Include="EvDb.Abstractions" Version="4.0.5" />
 	</ItemGroup>
 
 </Project>

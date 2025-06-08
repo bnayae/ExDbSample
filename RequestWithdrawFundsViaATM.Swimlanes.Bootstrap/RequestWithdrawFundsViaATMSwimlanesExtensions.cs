@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 using static Funds.Abstractions.FundsConstants.Swimlanes;
 
+#pragma warning disable S101 // Types should be named in PascalCase
 namespace Microsoft.Extensions;
 
 public static class RequestWithdrawFundsViaATMSwimlanesExtensions

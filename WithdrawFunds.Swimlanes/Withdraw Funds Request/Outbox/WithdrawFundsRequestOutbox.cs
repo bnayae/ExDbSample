@@ -18,7 +18,7 @@ internal partial class WithdrawFundsRequestOutbox
             Data = payload.Data,
             InitiateMethod = payload.InitiateMethod
         };
-        outbox.Add(message);
+        outbox.Append(message);
     }
 
     #endregion //  void ProduceOutboxMessages(FundsWithdrawalApprovedEvent payload,...)
@@ -34,7 +34,7 @@ internal partial class WithdrawFundsRequestOutbox
             InitiateMethod = payload.InitiateMethod,
             Commission = payload.Commission
         };
-        outbox.Add(message);
+        outbox.Append(message);
     }
 
     #endregion //  void ProduceOutboxMessages(WithdrawCommissionCalculatedEvent payload, ...)

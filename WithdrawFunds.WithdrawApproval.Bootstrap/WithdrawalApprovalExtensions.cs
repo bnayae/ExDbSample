@@ -14,7 +14,7 @@ public static class FetchFundsExtensions
     {
         services.TryAddWithdrawalApprovalCommand();
         services.TryAddWithdrawApprovalProcessor();
-        services.AddSQSProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>(
+        services.AddBridgedSQSProcessor<FundsWithdrawalRequestedViaAtmMessage, WithdrawalApprovalRequest>(
                                                                                 filter ?? (_ => true), 
                                                                                 FundsConstants.Queues.WithdrawApprover,
                                                                                 Debugger.IsAttached 

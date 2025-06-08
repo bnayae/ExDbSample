@@ -9,9 +9,7 @@ public partial class WithdrawalsInProcessView
 
     public override int MinEventsBetweenSnapshots { get; } = 10;
 
-    protected override ImmutableArray<WithdrawalsInProcessItem> Fold(ImmutableArray<WithdrawalsInProcessItem> state,
-                                                                     FundsWithdrawalApprovedEvent payload,
-                                                                     IEvDbEventMeta meta)
+    protected override ImmutableArray<WithdrawalsInProcessItem> Apply(ImmutableArray<WithdrawalsInProcessItem> state, FundsWithdrawalApprovedEvent payload, IEvDbEventMeta meta)
     {
         var item = new WithdrawalsInProcessItem(payload.AccountId, payload.Data);
         state = state.Add(item);

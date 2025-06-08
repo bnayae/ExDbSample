@@ -28,7 +28,7 @@ internal sealed class FetchFundsFromAtmCommand : ICommandHandler<FetchFundsFromA
         if (request.Data.Amount < 1000)
         {
             var e = new FundsFetchRequestedFromAtmEvent(account, data, INITIATE_METHOD);
-            await stream.AddAsync(e);
+            await stream.AppendAsync(e);
         }
         else
         {
@@ -38,7 +38,7 @@ internal sealed class FetchFundsFromAtmCommand : ICommandHandler<FetchFundsFromA
                 Data = data,
                 InitiateMethod = INITIATE_METHOD
             };
-            await stream.AddAsync(e);
+            await stream.AppendAsync(e);
         }
 
         StreamStoreAffected response = await stream.StoreAsync(cancellationToken);

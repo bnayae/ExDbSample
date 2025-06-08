@@ -25,7 +25,7 @@ internal class CalculateWithdrawCommissionCommand : ICommandHandler<CalculateWit
         IEvDbWithdrawFundsRequest stream = await _evDbFactory.GetAsync(accountId, cancellationToken);
 
         var e = new WithdrawCommissionCalculatedEvent(accountId, data, initiateMethod, commission);
-        await stream.AddAsync(e);
+        await stream.AppendAsync(e);
         _logger.WithdrawCommissionCalculated(accountId);
     }
 }

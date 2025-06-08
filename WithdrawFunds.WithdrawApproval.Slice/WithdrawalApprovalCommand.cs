@@ -29,13 +29,13 @@ internal class WithdrawalApprovalCommand : ICommandHandler<WithdrawalApprovalReq
         if (balance - sum < data.Amount)
         {
             var e = new FundsWithdrawalApprovedEvent(accountId, data, initiateMethod);
-            await stream.AddAsync(e);
+            await stream.AppendAsync(e);
             _logger.WithdrawalApproved(accountId);
         }
         else
         {
             var e = new FundsWithdrawalDeclinedEvent(accountId, data, initiateMethod);
-            await stream.AddAsync(e);
+            await stream.AppendAsync(e);
             _logger.WithdrawalDenied(accountId);
         }
 

@@ -19,6 +19,6 @@ internal sealed partial class AtmFundsOutbox
             Data = payload.Data,
             InitiateMethod = payload.InitiateMethod
         };
-        outbox.Add(msg);
+        outbox.Append(msg);
     }
 }

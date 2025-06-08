@@ -16,8 +16,6 @@ namespace Microsoft.Extensions;
 
 internal static class Extensions
 {
-    // private static readonly TextMapPropagator Propagator = Propagators.DefaultTextMapPropagator;
-
     private const string MONGODB_ENDPOINT = "mongodb://localhost:27017";
 
     #region StartListenToChangeStreamAsync
@@ -26,7 +24,18 @@ internal static class Extensions
                                                             Func<string, Task> onChange,
                                                             CancellationToken cancellationToken)
     {
-        using var changeStream = await collection.WatchAsync(cancellationToken: cancellationToken);
+        var options = new ChangeStreamOptions
+        {
+            FullDocument = ChangeStreamFullDocumentOption.UpdateLookup,
+            BatchSize = 100, // Adjust batch size as needed
+            ResumeAfter = null, // You can set this to a specific resume token if you want to resume from a specific point
+            StartAfter = null, // You can set this to a specific start point if needed
+            MaxAwaitTime = TimeSpan.FromSeconds(10), // Adjust the max await time as needed
+            StartAtOperationTime = null // You can set this to a specific operation time if needed
+            // Include the full document in the change stream
+            // so we can access the message content directly
+        };
+        using var changeStream = await collection.WatchAsync(options ,cancellationToken: cancellationToken);
 
         while (!cancellationToken.IsCancellationRequested && await changeStream.MoveNextAsync(cancellationToken))
         {

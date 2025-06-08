@@ -236,7 +236,7 @@ public static class AWSProviderExtensions
     /// <returns></returns>
     public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services, string queueName, TimeSpan visibilityTimeout)
     {
-        return services.AddSQSProcessor<T>(_ => true, queueName, visibilityTimeout);
+        return services.AddDirectSQSProcessor<T>(_ => true, queueName, visibilityTimeout);
     }
 
     #endregion //  Overloads
@@ -251,7 +251,7 @@ public static class AWSProviderExtensions
     /// <param name="queueName">Name of the queue.</param>
     /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
-    public static IServiceCollection AddSQSProcessor<T>(this IServiceCollection services,
+    public static IServiceCollection AddDirectSQSProcessor<T>(this IServiceCollection services,
                                                               Func<IEvDbMessageMeta, bool> filter,
                                                               string queueName,
                                                               TimeSpan visibilityTimeout)
@@ -273,15 +273,17 @@ public static class AWSProviderExtensions
         return services;
     }
 
-    #endregion //  AddSQSProcessor
+    #endregion //  AddDirectSQSProcessor
+
+    // TODO: [bnaya 2025-06-08] used keyed registration to specific stream `sp.GetRequiredKeyedService<IProcessor<TMessage, TRequest>>(key)`
 
     #region AddSQSProcessor
 
     #region Overloads
 
     /// <summary>
-    /// Adds the SQS processor.
-    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// Adds the SQS processor from event stream bridge.
+    /// This method registers a hosted service that processes messages from an SQS queue from event stream bridge into a command.
     /// </summary>
     /// <typeparam name="TMessage">The type of both the SQS message.</typeparam>
     /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
@@ -294,14 +296,14 @@ public static class AWSProviderExtensions
                                             string queueName,
                                             TimeSpan visibilityTimeout)
     {
-        return services.AddSQSProcessor<TMessage, TRequest>(_ => true, queueName, visibilityTimeout);
+        return services.AddBridgedSQSProcessor<TMessage, TRequest>(_ => true, queueName, visibilityTimeout);
     }
 
     #endregion //  Overloads
 
     /// <summary>   
-    /// Adds the SQS processor.
-    /// This method registers a hosted service that processes messages from an SQS queue into a command.
+    /// Adds the SQS processor from event stream bridge.
+    /// This method registers a hosted service that processes messages from an SQS queue from event stream bridge into a command.
     /// </summary>
     /// <typeparam name="TMessage">The type of both the SQS message.</typeparam>
     /// <typeparam name="TRequest">The type of both the command's request.</typeparam>
@@ -310,7 +312,7 @@ public static class AWSProviderExtensions
     /// <param name="consumeFromQueueName">Name of the queue (consume from).</param>
     /// <param name="visibilityTimeout">The SQS message visibility timeout</param>
     /// <returns></returns>
-    public static IServiceCollection AddSQSProcessor<TMessage, TRequest>(
+    public static IServiceCollection AddBridgedSQSProcessor<TMessage, TRequest>(
                                                 this IServiceCollection services,
                                                 Func<IEvDbMessageMeta, bool> filter,
                                                 string consumeFromQueueName,
@@ -333,5 +335,5 @@ public static class AWSProviderExtensions
         return services;
     }
 
-    #endregion //  AddSQSProcessor
+    #endregion //  AddDirectSQSProcessor
 }
