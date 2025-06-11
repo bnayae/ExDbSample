@@ -3,10 +3,9 @@
 	<PropertyGroup>
 		<RootNamespace>Funds.Withdraw.WithdrawFunds</RootNamespace>
 	</PropertyGroup>
-
+	
 	<ItemGroup>
-		<ProjectReference Include="..\WithdrawFunds.Abstractions\WithdrawFunds.Abstractions.csproj" />
-		<ProjectReference Include="..\RequestWithdrawFundsViaATM.Abstractions\RequestWithdrawFundsViaATM.Messages.csproj" />
+	  <ProjectReference Include="..\Funds.Abstractions\Funds.Abstractions.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
